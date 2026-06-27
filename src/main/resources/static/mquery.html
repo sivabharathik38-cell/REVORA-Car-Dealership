@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REVORA - Manage Inquiries</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="/js/toast-modal.js"></script>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+}
+
+/* HEADER */
+.header{
+    height:70px;
+    background:#111827;
+    color:white;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 30px;
+}
+
+.logo{
+    font-size:28px;
+    font-weight:bold;
+    color:#4f8cff;
+}
+
+/* LAYOUT */
+.container{
+    display:flex;
+    min-height:calc(100vh - 70px);
+}
+
+/* SIDEBAR */
+.sidebar{
+    width:250px;
+    background:#1f2937;
+    color:white;
+}
+
+.sidebar ul{
+    list-style:none;
+}
+
+.sidebar ul li{
+    padding:15px 25px;
+    cursor:pointer;
+    transition:0.3s;
+
+    display:flex;
+    align-items:center;
+    gap:12px;   /* consistent spacing */
+}
+
+.sidebar ul li i{
+    width:22px;
+    text-align:center;
+}
+.sidebar ul li:hover{
+    background:#374151;
+}
+
+.active{
+    background:#2563eb;
+}
+
+/* MAIN */
+.main{
+    flex:1;
+    padding:30px;
+}
+
+.page-title{
+    margin-bottom:25px;
+}
+
+/* TABLE */
+.table-box{
+    background:white;
+    border-radius:15px;
+    padding:20px;
+    box-shadow:0 3px 10px rgba(0,0,0,.08);
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:650px;
+}
+
+th{
+    background:#f3f4f6;
+    padding:12px;
+    text-align:left;
+}
+
+td{
+    padding:12px;
+    border-bottom:1px solid #ddd;
+}
+
+/* STATUS */
+.status{
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:600;
+}
+
+.pending{
+    background:#FEF3C7;
+    color:#92400E;
+}
+
+.replied{
+    background:#D1FAE5;
+    color:#065F46;
+}
+
+/* BUTTONS */
+.btn{
+    border:none;
+    padding:8px 12px;
+    border-radius:6px;
+    color:white;
+    cursor:pointer;
+    margin-right:5px;
+    transition:0.2s;
+}
+
+.btn:hover{
+    transform:scale(1.05);
+}
+
+.reply-btn{ background:#16A34A; }
+.view-btn{ background:#2563EB; }
+.delete-btn{ background:#DC2626; }
+
+/* MOBILE */
+@media(max-width:768px){
+    .container{
+        flex-direction:column;
+    }
+
+    .sidebar{
+        width:100%;
+        display:flex;
+        overflow-x:auto;
+    }
+
+    .sidebar ul{
+        display:flex;
+    }
+
+    .sidebar ul li{
+        white-space:nowrap;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <div class="logo">REVORA ADMIN</div>
+    <div><i class="fas fa-user-circle fa-2x"></i></div>
+</div>
+
+<div class="container">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <ul>
+            <li onclick="go('admin.html')"><i class="fas fa-chart-line"></i> Dashboard</li>
+            <li onclick="go('manage.html')"><i class="fas fa-car"></i> Manage Cars</li>
+            <li onclick="go('user.html')"><i class="fas fa-users"></i> Manage Users</li>
+            <li onclick="go('mbook.html')"><i class="fas fa-calendar-check"></i> Manage Bookings</li>
+            <li class="active"><i class="fas fa-envelope"></i> Manage Inquiries</li>
+            <li onclick="go('report.html')"><i class="fas fa-file-alt"></i> Reports</li>
+            <li onclick="window.location.href='home.html'"><i class="fas fa-car-side"></i> View Showroom</li>
+            <li onclick="logout()">
+             <i class="fas fa-sign-out-alt"></i> Logout
+            </li>
+        </ul>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+
+        <div class="page-title">
+            <h2>Manage Inquiries</h2>
+        </div>
+
+        <div class="table-box">
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Inquiry ID</th>
+                        <th>User</th>
+                        <th>Car</th>
+                        <th>Message</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="adminInquiriesTableBody">
+                    <!-- Loaded dynamically -->
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+// Check local storage for session authentication
+const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+if (!currentUser || currentUser.role !== "ADMIN") {
+    window.location.href = "login.html";
+} else {
+    loadManageInquiries();
+}
+
+function loadManageInquiries() {
+    fetch("/api/inquiries")
+        .then(res => res.json())
+        .then(inquiries => {
+            const tbody = document.getElementById("adminInquiriesTableBody");
+            tbody.innerHTML = "";
+
+            inquiries.forEach(inq => {
+                const tr = document.createElement("tr");
+                
+                let statusClass = "pending";
+                if (inq.status === "Replied") statusClass = "replied";
+
+                let actions = "";
+                if (inq.status === "Pending") {
+                    actions = `
+                        <button class="btn reply-btn" onclick="replyToInquiry(${inq.id})">Reply</button>
+                        <button class="btn delete-btn" onclick="deleteInquiry(${inq.id})">Delete</button>
+                    `;
+                } else {
+                    actions = `<button class="btn view-btn" onclick="viewReply(${inq.id})">View Reply</button>`;
+                }
+
+                const carName = inq.car ? inq.car.name : "General Inquiry";
+
+                tr.innerHTML = `
+                    <td>IN00${inq.id}</td>
+                    <td>${inq.name}</td>
+                    <td>${carName}</td>
+                    <td>${inq.message}</td>
+                    <td><span class="status ${statusClass}">${inq.status}</span></td>
+                    <td>${actions}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        })
+        .catch(err => console.error("Error fetching inquiries:", err));
+}
+
+function go(page){
+    window.location.href = page;
+}
+
+function replyToInquiry(id) {
+    const replyText = prompt("Enter reply for inquiry IN00" + id + ":");
+    if (replyText) {
+        fetch(`/api/inquiries/${id}/reply`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ reply: replyText })
+        })
+        .then(res => {
+            if (res.ok) {
+                alert("Reply sent successfully.");
+                loadManageInquiries();
+            } else {
+                alert("Error sending reply.");
+            }
+        });
+    }
+}
+
+function deleteInquiry(id){
+    confirmAction("Delete inquiry IN00" + id + "?", "Confirm Delete").then(confirmed => {
+        if(confirmed){
+            fetch(`/api/inquiries/${id}`, {
+                method: "DELETE"
+            })
+            .then(res => {
+                if (res.ok) {
+                    alert("Inquiry deleted successfully.");
+                    loadManageInquiries();
+                } else {
+                    alert("Error deleting inquiry.");
+                }
+            });
+        }
+    });
+}
+
+function viewReply(id){
+    fetch("/api/inquiries")
+        .then(res => res.json())
+        .then(inquiries => {
+            const inq = inquiries.find(item => item.id === id);
+            if (inq) {
+                alert(`Inquiry Message: ${inq.message}\n\nReply: ${inq.reply}`);
+            }
+        });
+}
+
+function logout() {
+    confirmAction("Are you sure you want to logout?", "Confirm Logout").then(confirmed => {
+        if (confirmed) {
+            localStorage.removeItem("currentUser");
+            window.location.href = "login.html";
+        }
+    });
+}
+</script>
+
+</body>
+</html>

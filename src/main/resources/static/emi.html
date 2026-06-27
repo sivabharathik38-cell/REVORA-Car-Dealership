@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="emi.css">
+   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<body>
+    <header class="head">
+        <div class="logo">
+            <img src="img1.png" alt="Logo">
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="home.html">Home</a></li>
+            <li><a href="cars.html">Cars</a></li>
+            <li><a href="compare.html">Compare</a></li>
+            <li><a href="emi.html">EMI Calculator</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+
+        <div class="right">
+            <a href="cars.html?search=true">
+                <img id="search" src="img5.png" alt="Search">
+            </a>
+
+            <div id="authButtons" style="display: flex; gap: 10px; align-items: center;">
+                <a href="login.html"><button id="log">Login</button></a>
+                <a href="register.html"><button id="reg">Register</button></a>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+
+    <h1>EMI Calculator</h1>
+
+    <div class="calculator-container">
+
+        <!-- Left Form -->
+        <div class="form-box">
+
+            <h2>Calculate Your EMI</h2>
+
+            <label>Car Price (₹)</label>
+            <input type="number" id="price" value="2000000">
+
+            <label>Down Payment (₹)</label>
+            <input type="number" id="downPayment" value="500000">
+
+            <label>Interest Rate (% p.a)</label>
+            <input type="number" id="interest" value="8">
+
+            <label>Loan Tenure</label>
+
+            <select id="years">
+                <option value="1">1 Year</option>
+                <option value="2">2 Years</option>
+                <option value="3">3 Years</option>
+                <option value="4">4 Years</option>
+                <option value="5" selected>5 Years</option>
+                <option value="6">6 Years</option>
+                <option value="7">7 Years</option>
+            </select>
+
+            <button class="emi-btn" onclick="calculateEMI()">
+Calculate EMI
+</button>
+
+<button class="reset-btn" onclick="resetData()">
+Reset
+</button>
+            <div class="summary-box">
+  <h3>Loan Summary</h3>
+  <div class="summary-item">
+    <span>Loan Amount</span>
+    <strong id="loanAmount">₹ 0</strong>
+  </div>
+  <div class="summary-item">
+    <span>Down Payment</span>
+    <strong id="summaryDownPayment">₹ 0</strong>
+  </div>
+  <div class="summary-item">
+    <span>Monthly Interest Rate</span>
+    <strong id="monthlyRate">0%</strong>
+  </div>
+  <div class="summary-item">
+    <span>Loan Tenure</span>
+    <strong id="summaryTenure">0 Years</strong>
+  </div>
+
+  <div class="progress-bar">
+    <div class="principal-bar" id="principalBar"></div>
+    <div class="interest-bar" id="interestBar"></div>
+  </div>
+
+  <p class="loan-note">This chart shows the split between principal and interest.</p>
+</div>
+
+        </div>
+        
+
+        <!-- Right Result -->
+        <div class="result-box">
+
+            <h2>Your EMI Details</h2>
+
+            <div class="result-card">
+                <p>Monthly EMI</p>
+                <h3 id="emi">₹ 0</h3>
+            </div>
+
+            <div class="result-card">
+                <p>Total Interest Payable</p>
+                <h3 id="interestAmount">₹ 0</h3>
+            </div>
+
+            <div class="result-card">
+                <p>Total Payment (Principal + Interest)</p>
+                <h3 id="totalPayment">₹ 0</h3>
+            </div>
+
+            <canvas id="emiChart"></canvas>
+
+        </div>
+
+    </div>
+
+</div>
+    
+</body>
+  <script>
+
+let chart;
+
+function calculateEMI() {
+
+    let carPrice = parseFloat(document.getElementById("price").value);
+    let downPayment = parseFloat(document.getElementById("downPayment").value);
+    let rate = parseFloat(document.getElementById("interest").value);
+    let years = parseInt(document.getElementById("years").value);
+
+    let principal = carPrice - downPayment;
+    let monthlyRate = rate / 12 / 100;
+    let months = years * 12;
+
+    let emi =
+        principal *
+        monthlyRate *
+        Math.pow(1 + monthlyRate, months) /
+        (Math.pow(1 + monthlyRate, months) - 1);
+
+    let totalPayment = emi * months;
+    let totalInterest = totalPayment - principal;
+
+    document.getElementById("emi").innerHTML =
+        "₹ " + emi.toFixed(0);
+
+    document.getElementById("interestAmount").innerHTML =
+        "₹ " + totalInterest.toLocaleString("en-IN", {
+            maximumFractionDigits: 0
+        });
+
+    document.getElementById("totalPayment").innerHTML =
+        "₹ " + totalPayment.toLocaleString("en-IN", {
+            maximumFractionDigits: 0
+        });
+
+
+    document.getElementById("loanAmount").innerHTML =
+        "₹ " + principal.toLocaleString("en-IN");
+
+    document.getElementById("summaryDownPayment").innerHTML =
+        "₹ " + downPayment.toLocaleString("en-IN");
+
+    document.getElementById("monthlyRate").innerHTML =
+        rate + "%";
+
+    document.getElementById("summaryTenure").innerHTML =
+        years + " Years";
+
+    let total = principal + totalInterest;
+
+    let principalPercent = (principal / total) * 100;
+    let interestPercent = (totalInterest / total) * 100;
+
+    document.getElementById("principalBar").style.width =
+        principalPercent + "%";
+
+    document.getElementById("interestBar").style.width =
+        interestPercent + "%";
+
+    drawChart(principal, totalInterest);
+}
+
+function drawChart(principal, interest) {
+
+    const ctx = document
+        .getElementById("emiChart")
+        .getContext("2d");
+
+    if (chart) {
+        chart.destroy();
+    }
+
+    chart = new Chart(ctx, {
+        type: "doughnut",
+        data: {
+            labels: ["Principal", "Interest"],
+            datasets: [{
+                data: [principal, interest],
+                backgroundColor: [
+                    "#2563eb",
+                    "#ef4444"
+                ],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: "bottom"
+                }
+            }
+        }
+    });
+}
+
+function resetData() {
+
+    document.getElementById("price").value = 2000000;
+    document.getElementById("downPayment").value = 500000;
+    document.getElementById("interest").value = 8;
+    document.getElementById("years").value = 5;
+
+    calculateEMI();
+}
+
+window.onload = function () {
+    calculateEMI();
+    
+    // Check local storage for session authentication
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    if (currentUser) {
+        const authDiv = document.getElementById("authButtons");
+        if (currentUser.role === 'ADMIN') {
+            authDiv.innerHTML = `
+                <span style="color:white; margin-right:10px;">Hello, Admin</span>
+                <a href="admin.html"><button id="log">Dashboard</button></a>
+                <button id="reg" onclick="logoutUser()">Logout</button>
+            `;
+        } else {
+            authDiv.innerHTML = `
+                <span style="color:white; margin-right:10px;">Hello, ${currentUser.username}</span>
+                <a href="dashboard.html"><button id="log">Dashboard</button></a>
+                <button id="reg" onclick="logoutUser()">Logout</button>
+            `;
+        }
+    }
+};
+
+function logoutUser() {
+    localStorage.removeItem("currentUser");
+    window.location.href = "home.html";
+}
+</script>
+
+</html>

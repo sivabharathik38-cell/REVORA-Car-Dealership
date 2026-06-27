@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="compare.css">
+    <script src="/js/toast-modal.js"></script>
+</head>
+<body>
+    <header class="head">
+        <div class="logo">
+            <img src="img1.png" alt="Logo">
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="home.html">Home</a></li>
+            <li><a href="cars.html">Cars</a></li>
+            <li><a href="compare.html">Compare</a></li>
+            <li><a href="emi.html">EMI Calculator</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+
+        <div class="right">
+            <a href="cars.html?search=true">
+                <img id="search" src="img5.png" alt="Search">
+            </a>
+
+            <div id="authButtons" style="display: flex; gap: 10px; align-items: center;">
+                <a href="login.html"><button id="log">Login</button></a>
+                <a href="register.html"><button id="reg">Register</button></a>
+            </div>
+        </div>
+    </header>
+    <p id="id2">Home /Cars/Compare</p>
+    <h1 id="id1">Compare Cars</h1>
+<p class="sub-text">
+    Select two cars to compare their features, specifications and more.
+</p>
+
+<div class="sec" style="height: auto; min-height: 100px; gap: 25px; padding: 15px 30px; flex-wrap: wrap;">
+
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <h3 id="id1" style="margin: 0; white-space: nowrap;">Filter Brand:</h3>
+        <select class="comp" id="brandFilter" style="width: 160px;" onchange="filterBothDropdowns()">
+            <option value="">All Brands</option>
+        </select>
+    </div>
+
+    <div class="carcard" style="display: flex; align-items: center; gap: 15px;">
+        <h3 id="id1" style="margin: 0; white-space: nowrap;">Car 1:</h3>
+        <select class="comp" id="car1" style="width: 200px;"></select>
+    </div>
+
+    <div class="carcard" style="display: flex; align-items: center; gap: 15px;">
+        <h3 id="id1" style="margin: 0; white-space: nowrap;">Car 2:</h3>
+        <select class="comp" id="car2" style="width: 200px;"></select>
+    </div>
+
+    <button id="but" style="margin: 0;" onclick="comparecar()">Compare</button>
+
+</div>
+
+<div class="cars">
+
+    <div class="card">
+    <img id="img1" src="https://www.pngarc.com/wp-content/uploads/2023/05/Car-Toyota-Fortuner-TRD-Sportivo-Auto-show-car-glass-headlamp-car-png-free-download.png">
+    <div class="car-info">
+
+    <h2 id="car1name">Toyota</h2>
+
+    <div id="price1">₹40,00,000</div>
+
+    <p id="fuel1">⛽Fuel: Diesel</p>
+    <p id="mileage1">⌛Mileage: 15 km/l</p>
+    <p id="trans1">⚙Transmission: Automatic</p>
+
+    <button onclick="viewDetails(1)">View Details</button>
+    </div>
+</div>
+<div class="card">
+    <img id="img2" src="https://pngimg.com/uploads/honda/honda_PNG102936.png">
+    <div class="car-info">
+
+    <h2 id="car2name">Honda</h2>
+
+    <div id="price2">₹13,20,000</div>
+
+    <p id="fuel2">⛽Fuel: Petrol</p>
+    <p id="mileage2">⌛Mileage: 18 km/l</p>
+    <p id="trans2">⚙Transmission: Manual</p>
+
+    <button onclick="viewDetails(2)">View Details</button>
+    </div>
+</div>
+
+</div>
+
+<table>
+    <tr>
+        <th>Features</th>
+        <th id="tablecar1">Toyota</th>
+        <th id="tablecar2">Honda</th>
+    </tr>
+
+    <tr>
+        <td>Ex-Showroom Price</td>
+        <td id="tprice1">₹40,00,000</td>
+        <td id="tprice2">₹13,20,000</td>
+    </tr>
+
+    <tr>
+        <td>Fuel</td>
+        <td id="tfuel1">Diesel</td>
+        <td id="tfuel2">Petrol</td>
+    </tr>
+
+    <tr>
+        <td>Mileage</td>
+        <td id="tmileage1">15 km/l</td>
+        <td id="tmileage2">18 km/l</td>
+    </tr>
+
+    <tr>
+        <td>Transmission</td>
+        <td id="ttrans1">Automatic</td>
+        <td id="ttrans2">Manual</td>
+    </tr>
+    <tr>
+        <td>Engine Capacity</td>
+        <td id="engine1">2.8L</td>
+        <td id="engine2">1.5L</td>
+    </tr>
+    <tr>
+        <td>Power</td>
+        <td id="power1">204 Ps</td>
+        <td id="power2">115 Ps</td>
+    </tr>
+    <tr>
+        <td>Body Type</td>
+        <td id="body1">SUV</td>
+        <td id="body2">SUV</td>
+    </tr>
+    <tr>
+        <td>Boot Space</td>
+        <td id="boot1">296 Litres</td>
+        <td id="boot2">433 Litres</td>
+    </tr>
+    <tr>
+    <td>Seating Capacity</td>
+    <td id="seat1">7 Seater</td>
+    <td id="seat2">5 Seater</td>
+</tr>
+    <tr>
+        <td>Safety Rating</td>
+        <td id="safety1">★★★★★</td>
+        <td id="safety2">★★★★☆</td>
+    </tr>
+
+</table>
+
+    
+</body>
+<script>
+// Check local storage for session authentication
+const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+if (currentUser) {
+    const authDiv = document.getElementById("authButtons");
+    if (currentUser.role === 'ADMIN') {
+        authDiv.innerHTML = `
+            <span style="color:white; margin-right:10px;">Hello, Admin</span>
+            <a href="admin.html"><button id="log">Dashboard</button></a>
+            <button id="reg" onclick="logoutUser()">Logout</button>
+        `;
+    } else {
+        authDiv.innerHTML = `
+            <span style="color:white; margin-right:10px;">Hello, ${currentUser.username}</span>
+            <a href="dashboard.html"><button id="log">Dashboard</button></a>
+            <button id="reg" onclick="logoutUser()">Logout</button>
+        `;
+    }
+}
+
+function logoutUser() {
+    localStorage.removeItem("currentUser");
+    window.location.href = "home.html";
+}
+
+let carsMap = {};
+let carsListGlobal = [];
+
+// Load cars dynamic option lists with brand filters
+document.addEventListener("DOMContentLoaded", function() {
+    fetch("/api/cars")
+        .then(res => res.json())
+        .then(carsList => {
+            carsListGlobal = carsList;
+            
+            // Extract unique brands
+            const brands = [...new Set(carsList.map(car => car.brand))];
+            
+            const brandFilter = document.getElementById("brandFilter");
+            
+            // Populate brand dropdown
+            brands.forEach(b => {
+                const opt = document.createElement("option");
+                opt.value = b;
+                opt.innerText = b;
+                brandFilter.appendChild(opt);
+            });
+            
+            // Populate cars map
+            carsList.forEach(car => {
+                carsMap[car.id] = car;
+            });
+            
+            // Initially populate car dropdowns with all cars
+            populateCarsDropdown(1);
+            populateCarsDropdown(2);
+            
+            // Set initial comparison selection
+            if (carsList.length >= 2) {
+                const select1 = document.getElementById("car1");
+                const select2 = document.getElementById("car2");
+                select1.selectedIndex = 0;
+                select2.selectedIndex = 1;
+                comparecar();
+            }
+        })
+        .catch(err => console.error("Error fetching cars:", err));
+});
+
+function populateCarsDropdown(index, selectedBrand = "") {
+    const carSelect = document.getElementById("car" + index);
+    carSelect.innerHTML = "";
+    
+    carsListGlobal.forEach(car => {
+        if (!selectedBrand || car.brand === selectedBrand) {
+            const opt = document.createElement("option");
+            opt.value = car.id;
+            opt.innerText = car.name;
+            carSelect.appendChild(opt);
+        }
+    });
+}
+
+function filterBothDropdowns() {
+    const selectedBrand = document.getElementById("brandFilter").value;
+    populateCarsDropdown(1, selectedBrand);
+    populateCarsDropdown(2, selectedBrand);
+    
+    // Auto-select different default indices for Car 1 and Car 2
+    const select1 = document.getElementById("car1");
+    const select2 = document.getElementById("car2");
+    if (select1.options.length > 0) {
+        select1.selectedIndex = 0;
+    }
+    if (select2.options.length > 1) {
+        select2.selectedIndex = 1;
+    } else if (select2.options.length > 0) {
+        select2.selectedIndex = 0;
+    }
+    
+    comparecar();
+}
+
+function comparecar(){
+    const c1Id = document.getElementById("car1").value;
+    const c2Id = document.getElementById("car2").value;
+
+    if (!c1Id || !c2Id) return;
+
+    const car1 = carsMap[c1Id];
+    const car2 = carsMap[c2Id];
+
+    // Card 1
+    document.getElementById("img1").src = car1.img;
+    document.getElementById("car1name").innerText = car1.name;
+    document.getElementById("price1").innerText = car1.priceText;
+    document.getElementById("fuel1").innerText = "⛽Fuel: " + car1.fuel;
+    document.getElementById("mileage1").innerText = "⌛Mileage: " + car1.mileage;
+    document.getElementById("trans1").innerText = "⚙Transmission: " + car1.transmission;
+
+    // Card 2
+    document.getElementById("img2").src = car2.img;
+    document.getElementById("car2name").innerText = car2.name;
+    document.getElementById("price2").innerText = car2.priceText;
+    document.getElementById("fuel2").innerText = "⛽Fuel: " + car2.fuel;
+    document.getElementById("mileage2").innerText = "⌛Mileage: " + car2.mileage;
+    document.getElementById("trans2").innerText = "⚙Transmission: " + car2.transmission;
+
+    // Table Header
+    document.getElementById("tablecar1").innerText = car1.name;
+    document.getElementById("tablecar2").innerText = car2.name;
+
+    // Table Content
+    document.getElementById("tprice1").innerText = car1.priceText;
+    document.getElementById("tprice2").innerText = car2.priceText;
+    document.getElementById("tfuel1").innerText = car1.fuel;
+    document.getElementById("tfuel2").innerText = car2.fuel;
+    document.getElementById("tmileage1").innerText = car1.mileage;
+    document.getElementById("tmileage2").innerText = car2.mileage;
+    document.getElementById("ttrans1").innerText = car1.transmission;
+    document.getElementById("ttrans2").innerText = car2.transmission;
+    document.getElementById("engine1").innerText = car1.engine;
+    document.getElementById("engine2").innerText = car2.engine;
+    document.getElementById("power1").innerText = car1.power;
+    document.getElementById("power2").innerText = car2.power;
+    document.getElementById("seat1").innerText = car1.seating;
+    document.getElementById("seat2").innerText = car2.seating;
+    document.getElementById("body1").innerText = car1.body;
+    document.getElementById("body2").innerText = car2.body;
+    document.getElementById("boot1").innerText = car1.boot;
+    document.getElementById("boot2").innerText = car2.boot;
+    document.getElementById("safety1").innerText = car1.safety;
+    document.getElementById("safety2").innerText = car2.safety;
+}
+
+function viewDetails(carNo) {
+    const cId = (carNo === 1) ? document.getElementById("car1").value : document.getElementById("car2").value;
+    if (!cId) return;
+    
+    const car = carsMap[cId];
+    
+    const links = {
+        "Toyota": "https://www.toyotabharat.com/",
+        "Honda": "https://www.hondacarindia.com/",
+        "Tata": "https://cars.tatamotors.com/nexon/ice.html",
+        "Mahindra": "https://auto.mahindra.com/",
+        "Skoda": "https://www.skoda-auto.co.in/",
+        "BMW": "https://www.bmw.in/",
+        "Jaguar": "https://www.jaguar.in/",
+        "Maruti": "https://www.marutisuzuki.com/"
+    };
+
+    if (links[car.brand]) {
+        window.open(links[car.brand], "_blank");
+    } else {
+        alert("Details page not available for brand " + car.brand);
+    }
+}
+</script>
+</html>

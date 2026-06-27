@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Website</title>
+    <link rel="stylesheet" href="home.css">
+</head>
+<body>
+    <div>
+
+    <header class="head">
+        <div class="logo">
+            <img src="img1.png" alt="Logo">
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="home.html">Home</a></li>
+            <li><a href="cars.html">Cars</a></li>
+            <li><a href="compare.html">Compare</a></li>
+            <li><a href="emi.html">EMI Calculator</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+
+        <div class="right">
+            <a href="cars.html?search=true">
+                <img id="search" src="img5.png" alt="Search">
+            </a>
+
+            <div id="authButtons" style="display: flex; gap: 10px; align-items: center;">
+                <a href="login.html"><button id="log">Login</button></a>
+                <a href="register.html"><button id="reg">Register</button></a>
+            </div>
+        </div>
+    </header>
+    <section class="section1">
+        <div class="text">
+            <h1>Find Your</h1>
+            <h1 id="color"> Perfect Dream Car</h1>
+            
+        </div>
+        <div >
+          <video class="bg-video" autoplay muted loop playsinline>
+    <source src="carvideo.mp4" type="video/mp4">
+     </video>
+        </div>
+
+    </section>
+
+    <section class="section2">
+        <h1>Featured Cars</h1>
+        <div class="container">
+            <div class="card" style="cursor: pointer;" onclick="window.location.href='details.html?id=7'">
+            <img src="https://stimg.cardekho.com/images/carexteriorimages/630x420/Jaguar/F-Pace/10644/1755774688332/front-left-side-47.jpg?impolicy=resize&imwidth=480">
+            <h3 >Jaguar</h3>
+            <p>₹ 99 Lakh</p>
+            <p>Diesel Automatic</p>
+           </div>
+           <div class="card" style="cursor: pointer;" onclick="window.location.href='details.html?id=8'">
+            <img src="https://imgd.aeplcdn.com/664x374/n/cw/ec/130591/fronx-exterior-right-front-three-quarter-109.png?isig=0&q=80">
+            <h3 >Maruti Fronx</h3>
+            <p>₹ 9.5 Lakh</p>
+            <p>Petrol Automatic</p>
+           </div>
+           <div class="card" style="cursor: pointer;" onclick="window.location.href='details.html?id=9'">
+            <img src="https://imgd.aeplcdn.com/664x374/n/cw/ec/136217/x7-exterior-right-front-three-quarter-10.png?isig=0&q=80">
+            <h3 >BMW X7 </h3>
+            <p>₹ 1.3 Crore</p>
+            <p>Diesel Automatic</p>
+           </div>
+           <div class="card" style="cursor: pointer;" onclick="window.location.href='details.html?id=10'">
+            <img src="https://stimg.cardekho.com/images/carexteriorimages/930x620/Tata/Punch/13243/1768986024623/front-left-side-47.jpg">
+            <h3 >Tata Punch</h3>
+            <p>₹ 8.0 Lakh</p>
+            <p>Petrol Manual</p>
+           </div>
+           
+
+        </div>
+       
+    </section>
+    <section class="section3">
+        <h1>Popular Brands</h1>
+        <div class="brand">
+             <img src="br1.png">
+             <img src="br2.png">
+             <img src="br3.jpg">
+             <img src="br10.jpeg">
+             <img src="br5.png">
+             <img src="br6.webp">
+             <img src="br7.jpg">
+             <img src="br8.jpg">
+
+           </div>
+    </section>
+    <div class="revor">
+         <h1>Why Choose Revora?</h1>
+    </div>
+    
+    <section class="section4">
+         
+        
+        <div class="rev">
+            <img src="https://static.vecteezy.com/system/resources/thumbnails/017/740/970/small_2x/trusted-security-icon-illustration-shield-icon-with-check-mark-icon-related-to-security-line-icon-style-simple-design-editable-vector.jpg">
+            <h1>Trusted Protection</h1>
+        </div>
+        
+        <div class="rev">
+            <img src="https://i.pinimg.com/736x/e8/46/f9/e846f935b537b9ce27791ae35da02eee.jpg">
+            <h1>Best Price Guarantee</h1>
+        </div>
+        
+        <div class="rev">
+            <img src="https://t4.ftcdn.net/jpg/15/05/90/49/360_F_1505904954_oaUohFNOueNOoSAAEMaJe3cwpuI4MwCE.jpg">
+            <h1>24/7 Support</h1>
+        </div>
+
+    </section>
+    </div>
+    <footer>
+        <h3 style="color: red;">REVORA</h3>
+        <P>Find Your Dream Car Today</P>
+        <p>Contact</p>
+        <p>+91 9876543210</p>
+        <p>info@revora.com</p>
+        <p>Madurai,India</p>
+        <p>© 2026 Revora.All Rights Reserved.</p>
+    </footer>
+
+
+<script>
+// Check local storage for session authentication
+const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+if (currentUser) {
+    const authDiv = document.getElementById("authButtons");
+    if (currentUser.role === 'ADMIN') {
+        authDiv.innerHTML = `
+            <span style="color:white; margin-right:10px;">Hello, Admin</span>
+            <a href="admin.html"><button id="log">Dashboard</button></a>
+            <button id="reg" onclick="logoutUser()">Logout</button>
+        `;
+    } else {
+        authDiv.innerHTML = `
+            <span style="color:white; margin-right:10px;">Hello, ${currentUser.username}</span>
+            <a href="dashboard.html"><button id="log">Dashboard</button></a>
+            <button id="reg" onclick="logoutUser()">Logout</button>
+        `;
+    }
+}
+
+function logoutUser() {
+    localStorage.removeItem("currentUser");
+    window.location.href = "home.html";
+}
+</script>
+</body>
+</html>

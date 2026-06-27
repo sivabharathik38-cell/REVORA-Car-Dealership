@@ -1,0 +1,44 @@
+-- Delete existing data to avoid primary key conflicts on restart
+DELETE FROM favorites;
+DELETE FROM inquiries;
+DELETE FROM bookings;
+DELETE FROM users;
+DELETE FROM cars;
+
+-- Insert Seed Users
+INSERT INTO users (id, username, password, email, phone, address, role) VALUES
+(1, 'admin', 'admin', 'admin@revora.com', '9999999999', 'Chennai, India', 'ADMIN'),
+(2, 'siva', 'siva', 'siva@gmail.com', '9876543210', 'Madurai, India', 'USER'),
+(3, 'rahul', 'rahul', 'rahul@gmail.com', '9876543211', 'Chennai, India', 'USER'),
+(4, 'arun', 'arun', 'arun@gmail.com', '9876543212', 'Coimbatore, India', 'USER');
+
+-- Insert Seed Cars
+INSERT INTO cars (id, name, brand, price, price_text, fuel, mileage, transmission, engine, power, seating, body, boot, safety, img, img1, img2, img3, img4) VALUES
+(1, 'Toyota Fortuner', 'Toyota', 4000000, '₹ 40 Lakh', 'Diesel', '15 km/l', 'Automatic', '2.8L', '204 PS', '7 Seater', 'SUV', '296 Litres', '★★★★★', 'https://c.ndtvimg.com/2020-12/i5fas99_toyota-fortuner-facelift_625x300_23_December_20.png', 'https://c.ndtvimg.com/2020-12/i5fas99_toyota-fortuner-facelift_625x300_23_December_20.png', 'https://stimg.cardekho.com/images/carexteriorimages/630x420/Toyota/Fortuner/10925/1690544186598/side-view-(left)-90.jpg', 'https://stimg.cardekho.com/images/carexteriorimages/630x420/Toyota/Fortuner/10925/1690544186598/rear-view-119.jpg', 'https://stimg.cardekho.com/images/carinteriorimages/630x420/Toyota/Fortuner/10925/1690544257121/dashboard-59.jpg'),
+(2, 'Honda City', 'Honda', 1320000, '₹ 13.2 Lakh', 'Petrol', '18 km/l', 'Manual', '1.5L', '121 PS', '5 Seater', 'Sedan', '506 Litres', '★★★★★', 'https://cdn.carhp.in/honda/honda_city_platinum_white_pearl.jpg?format=webp&width=800&q=75', 'https://cdn.carhp.in/honda/honda_city_platinum_white_pearl.jpg?format=webp&width=800&q=75', 'https://stimg.cardekho.com/images/carexteriorimages/630x420/Honda/City/9713/1677747806509/side-view-(left)-90.jpg', 'https://stimg.cardekho.com/images/carexteriorimages/630x420/Honda/City/9713/1677747806509/rear-left-view-121.jpg', 'https://stimg.cardekho.com/images/carinteriorimages/630x420/Honda/City/9713/1677748119047/dashboard-59.jpg'),
+(3, 'Kia Seltos', 'Kia', 1680000, '₹ 16.8 Lakh', 'Petrol', '16.8 km/l', 'Manual', '1.5L', '115 PS', '5 Seater', 'SUV', '433 Litres', '★★★★★', 'https://images.91wheels.com/assets/c_images/gallery/kia/seltos/kia-seltos-0-1768365864.png?w=850&q=40', 'https://images.91wheels.com/assets/c_images/gallery/kia/seltos/kia-seltos-0-1768365864.png?w=850&q=40', 'https://stimg.cardekho.com/images/carexteriorimages/630x420/Kia/Seltos/9855/1688463991206/side-view-(left)-90.jpg', 'https://stimg.cardekho.com/images/carexteriorimages/630x420/Kia/Seltos/9855/1688463991206/rear-left-view-121.jpg', 'https://stimg.cardekho.com/images/carinteriorimages/630x420/Kia/Seltos/9855/1688464098018/dashboard-59.jpg'),
+(4, 'Tata Nexon', 'Tata', 1030000, '₹ 10.3 Lakh', 'Petrol', '20 km/l', 'Manual', '1.2L', '120 PS', '5 Seater', 'SUV', '382 Litres', '★★★★★', 'https://images.91wheels.com/assets/c_images/gallery/tata/nexon/tata-nexon-0-1769674747.png?w=850&q=40', 'https://images.91wheels.com/assets/c_images/gallery/tata/nexon/tata-nexon-0-1769674747.png?w=850&q=40', 'https://stimg.cardekho.com/images/carexteriorimages/630x420/Tata/Nexon/10107/1697523910609/side-view-(left)-90.jpg', 'https://stimg.cardekho.com/images/carexteriorimages/630x420/Tata/Nexon/10107/1697523910609/rear-view-119.jpg', 'https://stimg.cardekho.com/images/carinteriorimages/630x420/Tata/Nexon/10107/1697524021235/dashboard-59.jpg'),
+(5, 'Mahindra XUV700', 'Mahindra', 2150000, '₹ 21.5 Lakh', 'Diesel', '17 km/l', 'Automatic', '2.2L', '185 PS', '7 Seater', 'SUV', '240 Litres', '★★★★★', 'https://c.ndtvimg.com/2024-07/dg95r5f8_mahindra-xuv700-dark-knight-edition_625x300_09_July_24.jpg?im=FaceCrop,algorithm=dnn,width=1200,height=738', 'https://c.ndtvimg.com/2024-07/dg95r5f8_mahindra-xuv700-dark-knight-edition_625x300_09_July_24.jpg?im=FaceCrop,algorithm=dnn,width=1200,height=738', 'https://stimg.cardekho.com/images/carexteriorimages/630x420/Mahindra/XUV700/10777/1690457630713/side-view-(left)-90.jpg', 'https://stimg.cardekho.com/images/carexteriorimages/630x420/Mahindra/XUV700/10777/1690457630713/rear-left-view-121.jpg', 'https://stimg.cardekho.com/images/carinteriorimages/630x420/Mahindra/XUV700/10777/1690457813098/dashboard-59.jpg'),
+(6, 'Skoda Slavia', 'Skoda', 1540000, '₹ 15.4 Lakh', 'Petrol', '19 km/l', 'Automatic', '1.5L', '150 PS', '5 Seater', 'Sedan', '521 Litres', '★★★★★', 'https://parkplus-bkt-img.parkplus.io/production/chariot_staging/public/whitecandywhitejpgimage_20230808185708683962.jpg', 'https://parkplus-bkt-img.parkplus.io/production/chariot_staging/public/whitecandywhitejpgimage_20230808185708683962.jpg', 'https://stimg.cardekho.com/images/carexteriorimages/630x420/Skoda/Slavia/10667/1692186716075/side-view-(left)-90.jpg', 'https://stimg.cardekho.com/images/carexteriorimages/630x420/Skoda/Slavia/10667/1692186716075/rear-left-view-121.jpg', 'https://stimg.cardekho.com/images/carinteriorimages/630x420/Skoda/Slavia/10667/1692186989439/dashboard-59.jpg'),
+(7, 'Jaguar F-Pace', 'Jaguar', 9900000, '₹ 99 Lakh', 'Diesel', '13 km/l', 'Automatic', '2.0L', '246 PS', '5 Seater', 'SUV', '650 Litres', '★★★★★', 'https://stimg.cardekho.com/images/carexteriorimages/630x420/Jaguar/F-Pace/10644/1755774688332/front-left-side-47.jpg?impolicy=resize&imwidth=480', 'https://stimg.cardekho.com/images/carexteriorimages/630x420/Jaguar/F-Pace/10644/1755774688332/front-left-side-47.jpg?impolicy=resize&imwidth=480', 'https://stimg.cardekho.com/images/carexteriorimages/630x420/Jaguar/F-Pace/10644/1755774688332/side-view-(left)-90.jpg', 'https://stimg.cardekho.com/images/carexteriorimages/630x420/Jaguar/F-Pace/10644/1755774688332/rear-view-119.jpg', 'https://stimg.cardekho.com/images/carinteriorimages/630x420/Jaguar/F-Pace/10644/1755774971216/dashboard-59.jpg'),
+(8, 'Maruti Fronx', 'Maruti', 950000, '₹ 9.5 Lakh', 'Petrol', '21 km/l', 'Automatic', '1.0L', '99 PS', '5 Seater', 'SUV', '308 Litres', '★★★★☆', 'https://imgd.aeplcdn.com/664x374/n/cw/ec/130591/fronx-exterior-right-front-three-quarter-109.png?isig=0&q=80', 'https://imgd.aeplcdn.com/664x374/n/cw/ec/130591/fronx-exterior-right-front-three-quarter-109.png?isig=0&q=80', 'https://stimg.cardekho.com/images/carexteriorimages/630x420/Maruti/Fronx/9639/1678184654924/side-view-(left)-90.jpg', 'https://stimg.cardekho.com/images/carexteriorimages/630x420/Maruti/Fronx/9639/1678184654924/rear-view-119.jpg', 'https://stimg.cardekho.com/images/carinteriorimages/630x420/Maruti/Fronx/9639/1678185012586/dashboard-59.jpg'),
+(9, 'BMW X7', 'BMW', 13000000, '₹ 1.3 Crore', 'Diesel', '12 km/l', 'Automatic', '3.0L', '340 PS', '7 Seater', 'SUV', '326 Litres', '★★★★★', 'https://imgd.aeplcdn.com/664x374/n/cw/ec/136217/x7-exterior-right-front-three-quarter-10.png?isig=0&q=80', 'https://imgd.aeplcdn.com/664x374/n/cw/ec/136217/x7-exterior-right-front-three-quarter-10.png?isig=0&q=80', 'https://stimg.cardekho.com/images/carexteriorimages/630x420/BMW/X7/9546/1673956961448/side-view-(left)-90.jpg', 'https://stimg.cardekho.com/images/carexteriorimages/630x420/BMW/X7/9546/1673956961448/rear-view-119.jpg', 'https://stimg.cardekho.com/images/carinteriorimages/630x420/BMW/X7/9546/1673957262071/dashboard-59.jpg'),
+(10, 'Tata Punch', 'Tata', 800000, '₹ 8.0 Lakh', 'Petrol', '18.9 km/l', 'Manual', '1.2L', '86 PS', '5 Seater', 'SUV', '366 Litres', '★★★★★', 'https://stimg.cardekho.com/images/carexteriorimages/930x620/Tata/Punch/13243/1768986024623/front-left-side-47.jpg', 'https://stimg.cardekho.com/images/carexteriorimages/930x620/Tata/Punch/13243/1768986024623/front-left-side-47.jpg', 'https://stimg.cardekho.com/images/carexteriorimages/630x420/Tata/Punch/11181/1690457630713/side-view-(left)-90.jpg', 'https://stimg.cardekho.com/images/carexteriorimages/630x420/Tata/Punch/11181/1690457630713/rear-view-119.jpg', 'https://stimg.cardekho.com/images/carinteriorimages/630x420/Tata/Punch/11181/1690457813098/dashboard-59.jpg');
+
+-- Insert Seed Bookings
+INSERT INTO bookings (id, user_id, car_id, booking_date, status) VALUES
+(1, 2, 9, '12 June 2026', 'Approved'),
+(2, 3, 5, '20 June 2026', 'Pending'),
+(3, 4, 1, '25 June 2026', 'Approved');
+
+-- Insert Seed Inquiries
+INSERT INTO inquiries (id, user_id, car_id, name, email, message, inquiry_date, status, reply) VALUES
+(1, 2, 9, 'siva', 'siva@gmail.com', 'Need EMI details for BMW X7', '10 June 2026', 'Pending', NULL),
+(2, 3, 2, 'rahul', 'rahul@gmail.com', 'Available in black color?', '15 June 2026', 'Replied', 'Yes, Honda City is available in Crystal Black Pearl.'),
+(3, 4, 1, 'arun', 'arun@gmail.com', 'Need test drive booking details', '20 June 2026', 'Pending', NULL);
+
+-- Insert Seed Favorites
+INSERT INTO favorites (id, user_id, car_id) VALUES
+(1, 2, 1),
+(2, 2, 9),
+(3, 2, 2);

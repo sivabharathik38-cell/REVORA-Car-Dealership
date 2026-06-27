@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REVORA - Manage Cars</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="/js/toast-modal.js"></script>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+}
+
+/* HEADER */
+
+.header{
+    height:70px;
+    background:#111827;
+    color:white;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 30px;
+}
+
+.logo{
+    font-size:28px;
+    font-weight:bold;
+    color:#4f8cff;
+}
+
+.admin-info{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.admin-info i{
+    font-size:22px;
+    cursor:pointer;
+}
+
+/* LAYOUT */
+
+.container{
+    display:flex;
+    min-height:calc(100vh - 70px);
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    width:250px;
+    background:#1f2937;
+    color:white;
+}
+
+.sidebar ul{
+    list-style:none;
+}
+
+.sidebar ul li{
+    padding:15px 25px;
+    cursor:pointer;
+    transition:0.3s;
+
+    display:flex;
+    align-items:center;
+    gap:12px;   /* consistent spacing */
+}
+
+.sidebar ul li i{
+    width:22px;
+    text-align:center;
+}
+.sidebar ul li:hover{
+    background:#374151;
+}
+
+
+
+.sidebar ul li.active{
+    background:#2563eb;
+    color:white;
+}
+
+/* MAIN */
+
+.main{
+    flex:1;
+    padding:30px;
+}
+
+.page-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.add-btn{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:15px;
+}
+
+.add-btn:hover{
+    background:#1d4ed8;
+}
+
+/* TABLE */
+
+.table-box{
+    background:white;
+    border-radius:15px;
+    padding:20px;
+    box-shadow:0 3px 10px rgba(0,0,0,.08);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:#f3f4f6;
+    padding:12px;
+    text-align:left;
+}
+
+td{
+    padding:12px;
+    border-bottom:1px solid #ddd;
+}
+
+.car-img{
+    width:80px;
+    height:60px;
+    border-radius:8px;
+    object-fit:cover;
+}
+
+.btn{
+    border:none;
+    padding:8px 15px;
+    border-radius:6px;
+    color:white;
+    cursor:pointer;
+}
+
+.edit{
+    background:#16a34a;
+}
+
+.delete{
+    background:#dc2626;
+}
+
+.edit:hover{
+    background:#15803d;
+}
+
+.delete:hover{
+    background:#b91c1c;
+}
+
+@media(max-width:768px){
+
+.container{
+    flex-direction:column;
+}
+
+.sidebar{
+    width:100%;
+}
+
+.table-box{
+    overflow-x:auto;
+}
+
+}
+
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+
+<div class="header">
+
+    <div class="logo">
+        REVORA ADMIN
+    </div>
+
+    <div class="admin-info">
+        <i class="fas fa-bell"></i>
+        <i class="fas fa-user-circle"></i>
+    </div>
+
+</div>
+
+<!-- CONTAINER -->
+
+<div class="container">
+
+    <!-- SIDEBAR -->
+
+    <div class="sidebar">
+
+        <ul>
+
+            <li onclick="window.location.href='admin.html'">
+                <i class="fas fa-chart-line"></i>
+                Dashboard
+            </li>
+
+            <li class="active" onclick="window.location.href='manage.html'">
+                <i class="fas fa-car"></i>
+                Manage Cars
+            </li>
+
+            <li onclick="window.location.href='user.html'">
+                <i class="fas fa-users"></i>
+                Manage Users
+            </li>
+
+            <li onclick="window.location.href='mbook.html'">
+                <i class="fas fa-calendar-check"></i>
+                Manage Bookings
+            </li>
+
+            <li onclick="window.location.href='mquery.html'">
+                <i class="fas fa-envelope"></i>
+                Manage Inquiries
+            </li>
+
+            <li onclick="window.location.href='report.html'">
+                <i class="fas fa-file-alt"></i>
+                Reports
+            </li>
+
+            <li onclick="window.location.href='home.html'">
+                <i class="fas fa-car-side"></i>
+                View Showroom
+            </li>
+
+            <li onclick="logout()">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </li>
+
+        </ul>
+
+    </div>
+
+    <!-- MAIN CONTENT -->
+
+    <div class="main">
+
+        <div class="page-title">
+
+            <h2>Manage Cars</h2>
+
+            <button class="add-btn">
+                <i class="fas fa-plus"></i>
+                Add New Car
+            </button>
+
+        </div>
+
+        <div class="table-box">
+
+            <table id="carsTable">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Car Name</th>
+                        <th>Brand</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="carsTableBody">
+                    <!-- Loaded dynamically -->
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+<script>
+// Check local storage for session authentication
+const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+if (!currentUser || currentUser.role !== "ADMIN") {
+    window.location.href = "login.html";
+} else {
+    loadManageCars();
+}
+
+function loadManageCars() {
+    fetch("/api/cars")
+        .then(res => res.json())
+        .then(cars => {
+            const tbody = document.getElementById("carsTableBody");
+            tbody.innerHTML = "";
+
+            cars.forEach(car => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>
+                        <img src="${car.img}" class="car-img" onerror="this.src='https://via.placeholder.com/80x60'">
+                    </td>
+                    <td>${car.name}</td>
+                    <td>${car.brand}</td>
+                    <td>${car.priceText}</td>
+                    <td>
+                        <button class="btn edit" onclick="editCar(${car.id})">Edit</button>
+                        <button class="btn delete" onclick="deleteCar(${car.id})">Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        })
+        .catch(err => console.error("Error loading cars:", err));
+}
+
+// Navigate sidebar
+function go(page){
+    window.location.href = page;
+}
+
+// ADD NEW CAR
+document.querySelector(".add-btn").addEventListener("click", function(){
+    let name = prompt("Enter Car Name:");
+    let brand = prompt("Enter Brand:");
+    let price = prompt("Enter Price (number in rupees, e.g. 4000000 for 40 Lakh):");
+    let img = prompt("Enter Main Image URL (Front):", "https://via.placeholder.com/350x250");
+    let img2 = prompt("Enter Side Image URL:", "https://via.placeholder.com/350x250");
+    let img3 = prompt("Enter Rear Image URL:", "https://via.placeholder.com/350x250");
+    let img4 = prompt("Enter Interior Image URL:", "https://via.placeholder.com/350x250");
+
+    if (name && brand && price) {
+        const carData = {
+            name: name,
+            brand: brand,
+            price: parseInt(price),
+            img: img,
+            img1: img,
+            img2: img2,
+            img3: img3,
+            img4: img4
+        };
+
+        fetch("/api/cars", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(carData)
+        })
+        .then(res => {
+            if (res.ok) {
+                alert("Car added successfully!");
+                loadManageCars();
+            } else {
+                alert("Error adding car.");
+            }
+        });
+    }
+});
+
+// DELETE CAR
+function deleteCar(id) {
+    confirmAction("Are you sure you want to delete this car?", "Confirm Delete").then(confirmed => {
+        if (confirmed) {
+            fetch(`/api/cars/${id}`, {
+                method: "DELETE"
+            })
+            .then(res => {
+                if (res.ok) {
+                    alert("Car deleted successfully");
+                    loadManageCars();
+                } else {
+                    alert("Error deleting car.");
+                }
+            });
+        }
+    });
+}
+
+// EDIT CAR
+function editCar(id) {
+    // Find car details in dynamic table row or look up from server
+    fetch(`/api/cars/${id}`)
+        .then(res => res.json())
+        .then(car => {
+            let newName = prompt("Edit Car Name:", car.name);
+            let newBrand = prompt("Edit Brand:", car.brand);
+            let newPrice = prompt("Edit Price (number in rupees):", car.price);
+            let newImg = prompt("Edit Main Image URL (Front):", car.img);
+            let newImg2 = prompt("Edit Side Image URL:", car.img2 || car.img);
+            let newImg3 = prompt("Edit Rear Image URL:", car.img3 || car.img);
+            let newImg4 = prompt("Edit Interior Image URL:", car.img4 || car.img);
+
+            if (newName && newBrand && newPrice) {
+                const carUpdate = {
+                    name: newName,
+                    brand: newBrand,
+                    price: parseInt(newPrice),
+                    img: newImg,
+                    img1: newImg,
+                    img2: newImg2,
+                    img3: newImg3,
+                    img4: newImg4
+                };
+
+                fetch(`/api/cars/${id}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(carUpdate)
+                })
+                .then(res => {
+                    if (res.ok) {
+                        alert("Car updated successfully");
+                        loadManageCars();
+                    } else {
+                        alert("Error updating car.");
+                    }
+                });
+            }
+        });
+}
+
+function logout() {
+    confirmAction("Are you sure you want to logout?", "Confirm Logout").then(confirmed => {
+        if (confirmed) {
+            localStorage.removeItem("currentUser");
+            window.location.href = "login.html";
+        }
+    });
+}
+</script>
+</html>
+

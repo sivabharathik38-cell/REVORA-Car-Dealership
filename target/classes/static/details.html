@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REVORA - Car Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="/js/toast-modal.js"></script>
+    <style>
+    body{
+    margin: 0;
+    padding: 0;
+    background-color: #fef9f9;
+    }
+   
+    .top{
+    margin-left: 30px;
+
+    }
+
+   .head{
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: black;
+    padding: 15px 30px;
+    height: 30px;
+   }
+
+  .logo img{
+    height: 150px;
+    width: auto;
+   }
+
+  .nav-links{
+    display: flex;
+    list-style: none;
+    gap: 40px;
+   }
+
+   .nav-links li a{
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 20px;
+    transition: color 0.3s;
+   }
+
+  .nav-links li a:hover{
+    color: red;
+  }
+
+  .right{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+   }
+   #search{
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+  }
+   #sort{
+    width: 200px;
+    height: 30px;
+    border-radius: 5px;
+  }
+
+  #search1{
+    width: 250px;
+    height: 30px;
+    cursor: pointer;
+    border-radius: 5px;
+   }
+  #brand{
+    width: 200px;
+    height: 30px;
+    border-radius: 5px;
+  }
+
+   button{
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    }
+
+    #log{
+    background-color: black;
+    color: white;
+    border: 1px solid white;
+   }
+
+   #log:hover{
+    background-color: white;
+    color: black;
+    }
+ 
+    #reg{
+    background-color: red;
+    color: white;
+    border: none;
+   }
+
+    #reg:hover{
+    background-color: darkred;
+      }
+        .breadcrumb-container {
+            max-width: 1200px;
+            margin: 20px auto 5px auto;
+            padding: 0 20px;
+        }
+
+        .breadcrumb {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .breadcrumb a {
+            text-decoration: none;
+            color: #999;
+            transition: color 0.3s;
+        }
+
+        .breadcrumb a:hover {
+            color: red;
+        }
+
+        /* DETAIL SECTION */
+        .details-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 40px;
+        }
+
+        
+        .showcase-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .gallery-wrapper {
+            display: grid;
+            grid-template-columns: 90px 1fr;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .thumbnails-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .thumbnail-btn {
+            width: 90px;
+            height: 68px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid #eee;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #fafafa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2px;
+        }
+
+        .thumbnail-btn img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 6px;
+            transition: transform 0.3s;
+        }
+
+        .thumbnail-btn:hover {
+            border-color: red;
+        }
+
+        .thumbnail-btn:hover img {
+            transform: scale(1.08);
+        }
+
+        .thumbnail-btn.active {
+            border-color: red;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+        }
+
+        .showcase-viewport {
+            position: relative;
+            width: 100%;
+            height: 420px;
+            background: radial-gradient(circle at center, #1b263b 0%, #0d1b2a 100%);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.8);
+            cursor: grab;
+        }
+
+        .showcase-viewport:active {
+            cursor: grabbing;
+        }
+
+        .car-gallery-image {
+            max-width: 90%;
+            max-height: 290px;
+            object-fit: contain;
+            filter: drop-shadow(0 20px 25px rgba(0, 0, 0, 0.85));
+            pointer-events: none;
+            transition: opacity 0.25s ease-in-out;
+            opacity: 1;
+        }
+
+        .car-gallery-image.fade-out {
+            opacity: 0.15;
+        }
+
+        /* Nav Arrows overlay */
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 45px;
+            height: 45px;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 10;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .nav-arrow:hover {
+            background: red;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+
+        .nav-arrow-left {
+            left: 20px;
+        }
+
+        .nav-arrow-right {
+            right: 20px;
+        }
+
+        /* Pagination Indicators */
+        .pag-dots {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .pag-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.4);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .pag-dot.active {
+            background: red;
+            transform: scale(1.2);
+            box-shadow: 0 0 8px rgba(255, 0, 0, 0.8);
+        }
+
+        /* Hotspots */
+        .hotspot {
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            background: red;
+            border: 2px solid white;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px red;
+            z-index: 20;
+            transform: translate(-50%, -50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: pulseHotspot 2s infinite;
+            pointer-events: auto;
+            transition: opacity 0.3s ease;
+        }
+
+        @keyframes pulseHotspot {
+            0% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.8); }
+            70% { transform: translate(-50%, -50%) scale(1.25); box-shadow: 0 0 0 8px rgba(255, 0, 0, 0); }
+            100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+        }
+
+        .hotspot::after {
+            content: attr(data-label);
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        .hotspot:hover::after {
+            opacity: 1;
+            visibility: visible;
+            bottom: 25px;
+        }
+
+        /* Control Panel */
+        .controls-panel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 1px solid #eee;
+        }
+
+        .toggle-rotate {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #555;
+            cursor: pointer;
+        }
+
+        @media(max-width: 768px) {
+            .gallery-wrapper {
+                grid-template-columns: 1fr;
+            }
+            .thumbnails-sidebar {
+                flex-direction: row;
+                order: 2;
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding-bottom: 5px;
+            }
+            .thumbnail-btn {
+                flex-shrink: 0;
+            }
+        }
+
+        /* RIGHT SIDE - SPEC DETAILS */
+        .info-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .info-card h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #111;
+        }
+
+        .brand-badge {
+            background: #eee;
+            color: #444;
+            padding: 4px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+            align-self: flex-start;
+            text-transform: uppercase;
+        }
+
+        .price-tag {
+            font-size: 28px;
+            font-weight: bold;
+            color: #0056d2;
+            margin-top: -10px;
+        }
+
+        .price-tag span {
+            font-size: 14px;
+            color: #666;
+            font-weight: normal;
+        }
+
+        /* Summary Quick Specs */
+        .quick-specs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 10px 0;
+        }
+
+        .spec-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #f0f0f0;
+        }
+
+        .spec-item i {
+            font-size: 18px;
+            color: red;
+            width: 20px;
+            text-align: center;
+        }
+
+        .spec-label {
+            font-size: 11px;
+            color: #777;
+        }
+
+        .spec-val {
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        /* Actions */
+        .action-btns {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .btn-primary {
+            background: red;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .btn-primary:hover {
+            background: darkred;
+        }
+
+        .btn-secondary-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .btn-secondary {
+            background: white;
+            border: 1px solid #ddd;
+            color: #333;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary:hover {
+            background: #f5f5f5;
+            border-color: #999;
+        }
+
+        .btn-fav.liked i {
+            color: red;
+        }
+
+        /* TABS PANEL */
+        .tabs-container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .tab-headers {
+            display: flex;
+            border-bottom: 2px solid #eee;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            font-size: 16px;
+            font-weight: 600;
+            color: #666;
+            padding: 12px 5px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            border-radius: 0;
+        }
+
+        .tab-btn:hover {
+            color: red;
+        }
+
+        .tab-btn.active {
+            color: red;
+            border-bottom-color: red;
+        }
+
+        .tab-content {
+            display: none;
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.03);
+            line-height: 1.6;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Specifications Table */
+        .specs-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .specs-table tr {
+            border-bottom: 1px solid #eee;
+        }
+
+        .specs-table td {
+            padding: 14px 20px;
+        }
+
+        .specs-table td:first-child {
+            font-weight: 600;
+            color: #666;
+            width: 30%;
+        }
+
+        .specs-table td:last-child {
+            color: #111;
+        }
+
+        /* Features grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .feature-bullet {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+            color: #333;
+        }
+
+        .feature-bullet i {
+            color: green;
+        }
+
+        /* INQUIRY MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            width: 450px;
+            padding: 30px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 20px;
+            color: #999;
+            cursor: pointer;
+        }
+
+        .close-modal:hover {
+            color: red;
+        }
+
+        .modal h2 {
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        /* REVIEWS STYLE */
+        .review-box {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+
+        .review-box:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .reviewer-name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .review-stars {
+            color: gold;
+        }
+
+        .review-text {
+            color: #555;
+            font-size: 14px;
+        }
+
+        /* FOOTER */
+        footer {
+            background-color: #111;
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 50px;
+        }
+
+        footer h3 {
+            color: red;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        footer p {
+            margin: 8px 0;
+            font-size: 16px;
+        }
+
+        footer p:last-child {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #bbb;
+        }
+
+        /* RESPONSIVE */
+        @media(max-width: 992px) {
+            .details-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+        }
+
+        @media(max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="head">
+        <div class="logo">
+            <img src="img1.png" alt="Logo"> 
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="home.html">Home</a></li>
+            <li><a href="cars.html">Cars</a></li>
+            <li><a href="compare.html">Compare</a></li>
+            <li><a href="emi.html">EMI Calculator</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+
+        <div class="right">
+            <a href="cars.html?search=true">
+                <img id="search" src="img5.png" alt="Search">
+            </a>
+
+            <div id="authButtons" style="display: flex; gap: 10px; align-items: center;">
+                <a href="login.html"><button id="log">Login</button></a>
+                <a href="register.html"><button id="reg">Register</button></a>
+            </div>
+        </div>
+    </header>
+
+    <!-- BREADCRUMB -->
+    <div class="breadcrumb-container">
+        <div class="breadcrumb">
+            <a href="home.html">Home</a> / <a href="cars.html">Cars</a> / <span id="breadCarName">Loading...</span>
+        </div>
+    </div>
+
+    <!-- DETAILS GRID -->
+    <main class="details-container">
+
+        <!-- LEFT SIDE - Showcase Gallery -->
+        <section class="showcase-card">
+            <div class="gallery-wrapper">
+                <!-- Sidebar Thumbnails -->
+                <div class="thumbnails-sidebar" id="thumbnailsBar">
+                    <div class="thumbnail-btn active" onclick="setGalleryIndex(0)" title="Front View">
+                        <img id="thumb0" src="" onerror="this.src='https://via.placeholder.com/90x68'">
+                    </div>
+                    <div class="thumbnail-btn" onclick="setGalleryIndex(1)" title="Side View">
+                        <img id="thumb1" src="" onerror="this.src='https://via.placeholder.com/90x68'">
+                    </div>
+                    <div class="thumbnail-btn" onclick="setGalleryIndex(2)" title="Rear View">
+                        <img id="thumb2" src="" onerror="this.src='https://via.placeholder.com/90x68'">
+                    </div>
+                    <div class="thumbnail-btn" onclick="setGalleryIndex(3)" title="Interior View">
+                        <img id="thumb3" src="" onerror="this.src='https://via.placeholder.com/90x68'">
+                    </div>
+                </div>
+
+                <!-- Main Viewport -->
+                <div class="showcase-viewport" id="viewport">
+                    <!-- Nav Arrows -->
+                    <div class="nav-arrow nav-arrow-left" onclick="prevImage()" title="Previous Position">
+                        <i class="fas fa-chevron-left"></i>
+                    </div>
+                    <div class="nav-arrow nav-arrow-right" onclick="nextImage()" title="Next Position">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+
+                    <!-- Main Image with Hotspots -->
+                    <img id="mainGalleryImg" src="" class="car-gallery-image" alt="Car Angle View">
+
+                    <!-- Dynamic Hotspots (visible ONLY on front view index 0) -->
+                    <div class="hotspot" id="hotspotEngine" style="left: 20%; top: 60%; z-index:20;" data-label="Engine: Loading...">
+                        <i class="fas fa-microchip" style="font-size:10px; color:white;"></i>
+                    </div>
+                    <div class="hotspot" id="hotspotCabin" style="left: 55%; top: 40%; z-index:20;" data-label="Cabin: Loading...">
+                        <i class="fas fa-chair" style="font-size:10px; color:white;"></i>
+                    </div>
+                    <div class="hotspot" id="hotspotWheel" style="left: 70%; top: 75%; z-index:20;" data-label="Transmission: Loading...">
+                        <i class="fas fa-cog" style="font-size:10px; color:white;"></i>
+                    </div>
+                    <div class="hotspot" id="hotspotSafety" style="left: 45%; top: 20%; z-index:20;" data-label="Safety: Loading...">
+                        <i class="fas fa-shield-alt" style="font-size:10px; color:white;"></i>
+                    </div>
+
+                    <!-- Pagination Dots -->
+                    <div class="pag-dots">
+                        <div class="pag-dot active" onclick="setGalleryIndex(0)"></div>
+                        <div class="pag-dot" onclick="setGalleryIndex(1)"></div>
+                        <div class="pag-dot" onclick="setGalleryIndex(2)"></div>
+                        <div class="pag-dot" onclick="setGalleryIndex(3)"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Showcase Control Panel -->
+            <div class="controls-panel">
+                <span style="font-size: 13px; font-weight: 600; color: #555; display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-hand-pointer" style="color: red;"></i> Swipe/Drag left-right or click arrows to rotate angles
+                </span>
+                
+                <label class="toggle-rotate">
+                    <input type="checkbox" id="autoPlayCheck">
+                    <i class="fas fa-circle-notch fa-spin" id="playIcon" style="display:none; color:red;"></i>
+                    <span>Auto-Play Gallery</span>
+                </label>
+            </div>
+        </section>
+
+        <!-- RIGHT SIDE - Specs Card -->
+        <section class="info-card">
+            <div>
+                <span class="brand-badge" id="carBrand">Brand</span>
+                <h1 id="carName" style="margin-top: 5px;">Car Model Name</h1>
+                <div class="price-tag" id="carPrice">₹ --.-- Lakh <span>(Ex-Showroom Price)</span></div>
+            </div>
+
+            <div class="quick-specs">
+                <div class="spec-item">
+                    <i class="fas fa-gas-pump"></i>
+                    <div>
+                        <div class="spec-label">Fuel Type</div>
+                        <div class="spec-val" id="specFuel">Loading...</div>
+                    </div>
+                </div>
+                <div class="spec-item">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <div>
+                        <div class="spec-label">Mileage</div>
+                        <div class="spec-val" id="specMileage">Loading...</div>
+                    </div>
+                </div>
+                <div class="spec-item">
+                    <i class="fas fa-cogs"></i>
+                    <div>
+                        <div class="spec-label">Transmission</div>
+                        <div class="spec-val" id="specTrans">Loading...</div>
+                    </div>
+                </div>
+                <div class="spec-item">
+                    <i class="fas fa-users"></i>
+                    <div>
+                        <div class="spec-label">Seating</div>
+                        <div class="spec-val" id="specSeats">Loading...</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-btns">
+                <button class="btn-primary" onclick="requestBooking()">
+                    <i class="fas fa-calendar-check" style="margin-right: 8px;"></i> Book Test Drive / Reserve
+                </button>
+                <div class="btn-secondary-group">
+                    <button class="btn-secondary btn-fav" onclick="toggleFavorite()">
+                        <i class="far fa-heart"></i> Add to Favorite
+                    </button>
+                    <button class="btn-secondary" onclick="openInquiryModal()">
+                        <i class="far fa-envelope"></i> Inquire Now
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- TABS CONTAINER -->
+    <section class="tabs-container">
+        <div class="tab-headers">
+            <button class="tab-btn active" onclick="switchTab(event, 'tabOverview')">Overview</button>
+            <button class="tab-btn" onclick="switchTab(event, 'tabSpecs')">Full Specifications</button>
+            <button class="tab-btn" onclick="switchTab(event, 'tabFeatures')">Key Features</button>
+            <button class="tab-btn" onclick="switchTab(event, 'tabReviews')">Reviews</button>
+        </div>
+
+        <!-- TAB OVERVIEW -->
+        <div class="tab-content active" id="tabOverview">
+            <h3 style="margin-bottom:15px;">Vehicle Overview</h3>
+            <p id="overviewText">Loading vehicle overview description...</p>
+        </div>
+
+        <!-- TAB SPECIFICATIONS -->
+        <div class="tab-content" id="tabSpecs">
+            <h3 style="margin-bottom:15px;">Detailed Technical Specifications</h3>
+            <table class="specs-table">
+                <tr>
+                    <td>Brand / Manufacturer</td>
+                    <td id="tableBrand">Loading...</td>
+                </tr>
+                <tr>
+                    <td>Model Name</td>
+                    <td id="tableModel">Loading...</td>
+                </tr>
+                <tr>
+                    <td>Ex-Showroom Price</td>
+                    <td id="tablePrice">Loading...</td>
+                </tr>
+                <tr>
+                    <td>Fuel Type</td>
+                    <td id="tableFuel">Loading...</td>
+                </tr>
+                <tr>
+                    <td>Engine Capacity</td>
+                    <td id="tableEngine">Loading...</td>
+                </tr>
+                <tr>
+                    <td>Maximum Power</td>
+                    <td id="tablePower">Loading...</td>
+                </tr>
+                <tr>
+                    <td>Transmission Type</td>
+                    <td id="tableTrans">Loading...</td>
+                </tr>
+                <tr>
+                    <td>Seating Capacity</td>
+                    <td id="tableSeating">Loading...</td>
+                </tr>
+                <tr>
+                    <td>Body Type</td>
+                    <td id="tableBody">Loading...</td>
+                </tr>
+                <tr>
+                    <td>Boot Space</td>
+                    <td id="tableBoot">Loading...</td>
+                </tr>
+                <tr>
+                    <td>Safety Rating</td>
+                    <td id="tableSafety" style="color: gold; font-size:18px;">★ ★ ★ ★ ★</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- TAB FEATURES -->
+        <div class="tab-content" id="tabFeatures">
+            <h3 style="margin-bottom:15px;">Standard Luxury Features</h3>
+            <div class="features-grid">
+                <div class="feature-bullet"><i class="fas fa-check-circle"></i> Dual-Zone Automatic Climate Control</div>
+                <div class="feature-bullet"><i class="fas fa-check-circle"></i> Touchscreen Infotainment System with GPS</div>
+                <div class="feature-bullet"><i class="fas fa-check-circle"></i> Premium Audio System (8 Speakers)</div>
+                <div class="feature-bullet"><i class="fas fa-check-circle"></i> Adaptive Cruise Control & Lane Keep Assist</div>
+                <div class="feature-bullet"><i class="fas fa-check-circle"></i> Leather Upholstery & Power Adjustable Seats</div>
+                <div class="feature-bullet"><i class="fas fa-check-circle"></i> Keyless Entry & Engine Start-Stop Button</div>
+                <div class="feature-bullet"><i class="fas fa-check-circle"></i> Panoramic Sunroof</div>
+                <div class="feature-bullet"><i class="fas fa-check-circle"></i> Anti-lock Braking System (ABS) & ESP</div>
+            </div>
+        </div>
+
+        <!-- TAB REVIEWS -->
+        <div class="tab-content" id="tabReviews">
+            <h3 style="margin-bottom:20px;">Customer Reviews & Ratings</h3>
+            <div class="review-box">
+                <div class="review-header">
+                    <span class="reviewer-name">Siva Bharathi</span>
+                    <span class="review-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                </div>
+                <p class="review-text">"Absolutely love the performance and the design details! Truly a luxury machine worth every rupee."</p>
+            </div>
+            <div class="review-box">
+                <div class="review-header">
+                    <span class="reviewer-name">Rahul Kumar</span>
+                    <span class="review-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i></span>
+                </div>
+                <p class="review-text">"Superb engine comfort and premium interior. Highway mileage is excellent."</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- INQUIRY FORM MODAL -->
+    <div class="modal" id="inquiryModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeInquiryModal()">&times;</span>
+            <h2>Send Inquiry</h2>
+            <form id="modalInquiryForm">
+                <div class="form-group">
+                    <label>Your Name</label>
+                    <input type="text" id="inqName" placeholder="Enter your name" required>
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="inqEmail" placeholder="Enter email" required>
+                </div>
+                <div class="form-group">
+                    <label>Message</label>
+                    <textarea id="inqMessage" rows="4" placeholder="Need EMI details, test drive scheduling, etc." required></textarea>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; border: none;">Submit Inquiry</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <h3 style="color: red;">REVORA</h3>
+        <p>Find Your Dream Car Today</p>
+        <p>Contact</p>
+        <p>+91 9876543210</p>
+        <p>info@revora.com</p>
+        <p>Madurai, India</p>
+        <p>© 2026 Revora. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // Check local storage for session authentication
+        const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+        if (currentUser) {
+            const authDiv = document.getElementById("authButtons");
+            if (currentUser.role === 'ADMIN') {
+                authDiv.innerHTML = `
+                    <span style="color:white; margin-right:10px;">Hello, Admin</span>
+                    <a href="admin.html"><button id="log">Dashboard</button></a>
+                    <button id="reg" onclick="logoutUser()">Logout</button>
+                `;
+            } else {
+                authDiv.innerHTML = `
+                    <span style="color:white; margin-right:10px;">Hello, ${currentUser.username}</span>
+                    <a href="dashboard.html"><button id="log">Dashboard</button></a>
+                    <button id="reg" onclick="logoutUser()">Logout</button>
+                `;
+            }
+        }
+
+        function logoutUser() {
+            localStorage.removeItem("currentUser");
+            window.location.href = "home.html";
+        }
+
+        // Fetch Car ID from query params
+        const urlParams = new URLSearchParams(window.location.search);
+        const carId = urlParams.get('id');
+        let currentCar = null;
+
+        if (!carId) {
+            alert("No car selected. Redirecting to cars directory...");
+            window.location.href = "cars.html";
+        }
+
+        // Gallery state variables
+        let galleryImages = [];
+        let activeIndex = 0;
+        let autoPlayInterval = null;
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // Load Car data
+            fetch(`/api/cars/${carId}`)
+                .then(res => {
+                    if (!res.ok) throw new Error("Car not found");
+                    return res.json();
+                })
+                .then(car => {
+                    currentCar = car;
+                    
+                    // Breadcrumb & Info Card
+                    document.getElementById("breadCarName").innerText = car.name;
+                    document.getElementById("carBrand").innerText = car.brand;
+                    document.getElementById("carName").innerText = car.name;
+                    document.getElementById("carPrice").innerHTML = `${car.priceText} <span>(Ex-Showroom Price)</span>`;
+                    
+                    // Populate gallery images (fallback to main img if other angles are empty)
+                    galleryImages = [
+                        car.img1 || car.img,
+                        car.img2 || car.img,
+                        car.img3 || car.img,
+                        car.img4 || car.img
+                    ];
+
+                    // Set initial main image immediately
+                    setGalleryIndex(0);
+
+                    // Defer setting thumbnails src to let main image load first
+                    setTimeout(() => {
+                        document.getElementById("thumb0").src = galleryImages[0];
+                        document.getElementById("thumb1").src = galleryImages[1];
+                        document.getElementById("thumb2").src = galleryImages[2];
+                        document.getElementById("thumb3").src = galleryImages[3];
+                    }, 100);
+
+                    // Quick specs
+                    document.getElementById("specFuel").innerText = car.fuel;
+                    document.getElementById("specMileage").innerText = car.mileage;
+                    document.getElementById("specTrans").innerText = car.transmission;
+                    document.getElementById("specSeats").innerText = car.seating;
+
+                    // Hotspots Label pre-fills
+                    document.getElementById("hotspotEngine").setAttribute("data-label", `Engine Capacity: ${car.engine} (${car.power})`);
+                    document.getElementById("hotspotCabin").setAttribute("data-label", `Interior Comfort: ${car.seating}`);
+                    document.getElementById("hotspotWheel").setAttribute("data-label", `Transmission: ${car.transmission}`);
+                    document.getElementById("hotspotSafety").setAttribute("data-label", `Safety Rating: ${car.safety}`);
+
+                    // Overview Tab Text
+                    document.getElementById("overviewText").innerText = `The ${car.brand} ${car.name} is a state-of-the-art ${car.body} designed with ultimate comfort, robust performance, and superior aesthetics in mind. Featuring a powerful ${car.engine} engine delivering ${car.power}, it boasts a fuel-efficient mileage of ${car.mileage}. With a spacious ${car.seating} arrangement and a safety rating of ${car.safety}, this vehicle offers absolute peace of mind for both long highway journeys and city commutes.`;
+
+                    // Full Specifications Tab
+                    document.getElementById("tableBrand").innerText = car.brand;
+                    document.getElementById("tableModel").innerText = car.name;
+                    document.getElementById("tablePrice").innerText = car.priceText;
+                    document.getElementById("tableFuel").innerText = car.fuel;
+                    document.getElementById("tableEngine").innerText = car.engine;
+                    document.getElementById("tablePower").innerText = car.power;
+                    document.getElementById("tableTrans").innerText = car.transmission;
+                    document.getElementById("tableSeating").innerText = car.seating;
+                    document.getElementById("tableBody").innerText = car.body;
+                    document.getElementById("tableBoot").innerText = car.boot;
+                    document.getElementById("tableSafety").innerText = car.safety;
+
+                    // Update Favorite active class if user already liked it
+                    checkIfFavorite();
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("Error loading car details.");
+                    window.location.href = "cars.html";
+                });
+        });
+
+        // --- INTERACTIVE SWIPE GALLERY LOGIC ---
+        function setGalleryIndex(index) {
+            if (index < 0 || index >= galleryImages.length) return;
+            
+            const mainImg = document.getElementById("mainGalleryImg");
+            mainImg.classList.add("fade-out");
+            
+            setTimeout(() => {
+                activeIndex = index;
+                mainImg.src = galleryImages[index];
+                
+                mainImg.onload = () => {
+                    mainImg.classList.remove("fade-out");
+                };
+                // Fallback in case onload fires immediately
+                setTimeout(() => {
+                    mainImg.classList.remove("fade-out");
+                }, 50);
+
+                // Update active thumbnails
+                const thumbBtns = document.querySelectorAll(".thumbnail-btn");
+                thumbBtns.forEach((btn, i) => {
+                    if (i === index) btn.classList.add("active");
+                    else btn.classList.remove("active");
+                });
+
+                // Update pagination indicators
+                const dots = document.querySelectorAll(".pag-dot");
+                dots.forEach((dot, i) => {
+                    if (i === index) dot.classList.add("active");
+                    else dot.classList.remove("active");
+                });
+
+                // Control hotspots: ONLY visible on front view (index 0)
+                const hotspots = document.querySelectorAll(".hotspot");
+                hotspots.forEach(hot => {
+                    if (index === 0) {
+                        hot.style.opacity = "1";
+                        hot.style.pointerEvents = "auto";
+                    } else {
+                        hot.style.opacity = "0";
+                        hot.style.pointerEvents = "none";
+                    }
+                });
+            }, 150);
+        }
+
+        function nextImage() {
+            let nextIdx = (activeIndex + 1) % galleryImages.length;
+            setGalleryIndex(nextIdx);
+        }
+
+        function prevImage() {
+            let prevIdx = (activeIndex - 1 + galleryImages.length) % galleryImages.length;
+            setGalleryIndex(prevIdx);
+        }
+
+        // Swipe & Drag Gestures
+        const viewport = document.getElementById("viewport");
+        let startX = 0;
+        let isDragging = false;
+
+        viewport.addEventListener("touchstart", (e) => {
+            if (e.touches.length > 0) {
+                startX = e.touches[0].clientX;
+            }
+        }, { passive: true });
+
+        viewport.addEventListener("touchend", (e) => {
+            if (e.changedTouches.length > 0) {
+                let endX = e.changedTouches[0].clientX;
+                handleSwipe(startX, endX);
+            }
+        }, { passive: true });
+
+        viewport.addEventListener("mousedown", (e) => {
+            startX = e.clientX;
+            isDragging = true;
+        });
+
+        viewport.addEventListener("mouseup", (e) => {
+            if (isDragging) {
+                let endX = e.clientX;
+                handleSwipe(startX, endX);
+                isDragging = false;
+            }
+        });
+
+        viewport.addEventListener("mouseleave", () => {
+            isDragging = false;
+        });
+
+        function handleSwipe(start, end) {
+            const diffX = start - end;
+            const threshold = 50; // min distance
+            if (Math.abs(diffX) > threshold) {
+                if (diffX > 0) {
+                    nextImage(); // swiped left
+                } else {
+                    prevImage(); // swiped right
+                }
+            }
+        }
+
+        // Auto-Play Gallery Logic
+        const autoPlayCheck = document.getElementById("autoPlayCheck");
+        const playIcon = document.getElementById("playIcon");
+
+        autoPlayCheck.addEventListener("change", function() {
+            if (this.checked) {
+                playIcon.style.display = "inline-block";
+                autoPlayInterval = setInterval(() => {
+                    nextImage();
+                }, 3000);
+            } else {
+                if (autoPlayInterval) {
+                    clearInterval(autoPlayInterval);
+                    autoPlayInterval = null;
+                }
+                playIcon.style.display = "none";
+            }
+        });
+
+        // --- TABS SWITCH LOGIC ---
+        function switchTab(e, tabId) {
+            const tabs = document.querySelectorAll(".tab-content");
+            tabs.forEach(tab => tab.classList.remove("active"));
+            
+            const tabBtns = document.querySelectorAll(".tab-btn");
+            tabBtns.forEach(btn => btn.classList.remove("active"));
+
+            document.getElementById(tabId).classList.add("active");
+            e.currentTarget.classList.add("active");
+        }
+
+        // --- FAVORITES LOGIC ---
+        function checkIfFavorite() {
+            if (!currentUser) return;
+            fetch(`/api/favorites?userId=${currentUser.id}`)
+                .then(res => res.json())
+                .then(favs => {
+                    const liked = favs.some(f => f.car.id === parseInt(carId));
+                    const favBtn = document.querySelector(".btn-fav");
+                    if (liked) {
+                        favBtn.classList.add("liked");
+                        favBtn.innerHTML = `<i class="fas fa-heart"></i> Favorited`;
+                    }
+                });
+        }
+
+        function toggleFavorite() {
+            if (!currentUser) {
+                alert("Please log in to add cars to favorites.");
+                window.location.href = "login.html";
+                return;
+            }
+
+            fetch("/api/favorites/toggle", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ userId: currentUser.id, carId: parseInt(carId) })
+            })
+            .then(res => res.text())
+            .then(msg => {
+                alert(msg);
+                const favBtn = document.querySelector(".btn-fav");
+                if (msg.includes("added")) {
+                    favBtn.classList.add("liked");
+                    favBtn.innerHTML = `<i class="fas fa-heart"></i> Favorited`;
+                } else {
+                    favBtn.classList.remove("liked");
+                    favBtn.innerHTML = `<i class="far fa-heart"></i> Add to Favorite`;
+                }
+            });
+        }
+
+        // --- BOOKING LOGIC ---
+        function requestBooking() {
+            if (!currentUser) {
+                alert("Please log in to book a test drive.");
+                window.location.href = "login.html";
+                return;
+            }
+
+            const date = prompt("Enter booking date (e.g. 15 July 2026):", "15 July 2026");
+            if (date) {
+                fetch("/api/bookings", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ userId: currentUser.id, carId: parseInt(carId), bookingDate: date })
+                })
+                .then(res => {
+                    if (res.ok) {
+                        alert("Booking requested successfully! Check your dashboard bookings tab.");
+                        window.location.href = "book.html";
+                    } else {
+                        alert("Error making booking.");
+                    }
+                });
+            }
+        }
+
+        // --- INQUIRY MODAL LOGIC ---
+        const inquiryModal = document.getElementById("inquiryModal");
+        
+        function openInquiryModal() {
+            if (currentUser) {
+                document.getElementById("inqName").value = currentUser.username;
+                document.getElementById("inqEmail").value = currentUser.email;
+            }
+            inquiryModal.classList.add("active");
+        }
+
+        function closeInquiryModal() {
+            inquiryModal.classList.remove("active");
+        }
+
+        document.getElementById("modalInquiryForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            const name = document.getElementById("inqName").value;
+            const email = document.getElementById("inqEmail").value;
+            const message = document.getElementById("inqMessage").value;
+
+            const requestData = {
+                name,
+                email,
+                message,
+                carId: parseInt(carId)
+            };
+
+            if (currentUser) {
+                requestData.userId = currentUser.id;
+            }
+
+            fetch("/api/inquiries", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(requestData)
+            })
+            .then(res => {
+                if (res.ok) {
+                    alert("Thank you! Your inquiry has been saved. Opening your mail client to send an email to sivabharathik38@gmail.com...");
+                    
+                    // Trigger mailto link pre-fill
+                    const mailtoUrl = `mailto:sivabharathik38@gmail.com?subject=REVORA Inquiry: ${encodeURIComponent(currentCar.brand + " " + currentCar.name)}&body=Customer Name: ${encodeURIComponent(name)}%0D%0ACustomer Email: ${encodeURIComponent(email)}%0D%0A%0D%0AMessage:%0D%0A${encodeURIComponent(message)}`;
+                    window.location.href = mailtoUrl;
+
+                    closeInquiryModal();
+                    document.getElementById("modalInquiryForm").reset();
+                } else {
+                    alert("Error submitting inquiry.");
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REVORA - Search Cars</title>
+    <link rel="stylesheet" href="cars.css">
+    <script src="/js/toast-modal.js"></script>
+    <style>
+        .search-container {
+            max-width: 800px;
+            margin: 40px auto;
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .search-container h2 {
+            margin-bottom: 20px;
+            font-size: 28px;
+            color: #111;
+        }
+        .search-box-wrap {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        .search-box-wrap input {
+            width: 70%;
+            padding: 12px 20px;
+            border: 2px solid #ddd;
+            border-radius: 30px;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s;
+        }
+        .search-box-wrap input:focus {
+            border-color: red;
+        }
+        .search-box-wrap button {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .search-box-wrap button:hover {
+            background-color: darkred;
+        }
+        .results-info {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #666;
+        }
+        .results-container {
+            width: 90%;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <header class="head">
+        <div class="logo">
+            <img src="img1.png" alt="Logo">
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="home.html">Home</a></li>
+            <li><a href="cars.html">Cars</a></li>
+            <li><a href="compare.html">Compare</a></li>
+            <li><a href="emi.html">EMI Calculator</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+
+        <div class="right">
+            <a href="search.html">
+                <img id="search" src="img5.png" alt="Search">
+            </a>
+
+            <div id="authButtons">
+                <!-- Wired up dynamically in JS -->
+                <a href="login.html"><button id="log">Login</button></a>
+                <a href="register.html"><button id="reg">Register</button></a>
+            </div>
+        </div>
+    </header>
+
+    <div class="top">
+        <h1>Search Cars</h1>
+        <p>Home/Search</p>
+    </div>
+
+    <div class="search-container">
+        <h2>Find Your Perfect Vehicle</h2>
+        <div class="search-box-wrap">
+            <input type="text" id="searchInput" placeholder="Type name, brand, or features...">
+            <button onclick="performSearch()">Search</button>
+        </div>
+    </div>
+
+    <div class="results-container">
+        <div class="results-info" id="resultsInfo">Enter keyword to search for cars</div>
+        
+        <div class="allcar" id="resultsGrid">
+            <!-- Search Results will be rendered here dynamically -->
+        </div>
+    </div>
+
+    <script>
+        // Check local storage for session authentication
+        const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+        if (currentUser) {
+            const authDiv = document.getElementById("authButtons");
+            if (currentUser.role === 'ADMIN') {
+                authDiv.innerHTML = `
+                    <span style="color:white; margin-right:10px;">Hello, Admin</span>
+                    <a href="admin.html"><button id="log">Dashboard</button></a>
+                    <button id="reg" onclick="logoutUser()">Logout</button>
+                `;
+            } else {
+                authDiv.innerHTML = `
+                    <span style="color:white; margin-right:10px;">Hello, ${currentUser.username}</span>
+                    <a href="dashboard.html"><button id="log">Dashboard</button></a>
+                    <button id="reg" onclick="logoutUser()">Logout</button>
+                `;
+            }
+        }
+
+        function logoutUser() {
+            localStorage.removeItem("currentUser");
+            window.location.href = "home.html";
+        }
+
+        // Run search if query param is present
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const query = urlParams.get("query");
+            if (query) {
+                document.getElementById("searchInput").value = query;
+                performSearch(query);
+            }
+        };
+
+        function performSearch(queryVal) {
+            const query = queryVal || document.getElementById("searchInput").value.trim();
+            if (!query) {
+                document.getElementById("resultsInfo").innerText = "Please enter a search query.";
+                document.getElementById("resultsGrid").innerHTML = "";
+                return;
+            }
+
+            document.getElementById("resultsInfo").innerText = `Searching for "${query}"...`;
+
+            fetch(`/api/cars/search?query=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(cars => {
+                    const resultsGrid = document.getElementById("resultsGrid");
+                    resultsGrid.innerHTML = "";
+                    document.getElementById("resultsInfo").innerText = `Found ${cars.length} result(s) for "${query}"`;
+
+                    if (cars.length === 0) {
+                        resultsGrid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; font-size: 18px; margin-top: 40px; color: #888;">No cars found matching your search.</p>`;
+                        return;
+                    }
+
+                    cars.forEach(car => {
+                        const carCard = document.createElement("div");
+                        carCard.className = "car";
+                        carCard.innerHTML = `
+                            <span class="heart" onclick="toggleFav(event, ${car.id}, this)">❤</span>
+                            <img src="${car.img}" alt="${car.name}">
+                            <h2>${car.name}</h2>
+                            <p>${car.priceText}</p>
+                            <button onclick="bookCar(${car.id})">Book Now</button>
+                        `;
+
+                        // Check if already favorited (optional enhancement)
+                        checkIfFavorited(car.id, carCard.querySelector(".heart"));
+
+                        resultsGrid.appendChild(carCard);
+                    });
+                })
+                .catch(error => {
+                    console.error("Error searching cars:", error);
+                    document.getElementById("resultsInfo").innerText = "Error performing search. Please try again.";
+                });
+        }
+
+        function checkIfFavorited(carId, heartEl) {
+            if (!currentUser) return;
+            fetch(`/api/favorites?userId=${currentUser.id}`)
+                .then(res => res.json())
+                .then(favs => {
+                    const isFav = favs.some(f => f.car.id === carId);
+                    if (isFav) {
+                        heartEl.classList.add("liked");
+                    }
+                });
+        }
+
+        function toggleFav(event, carId, element) {
+            event.stopPropagation();
+            if (!currentUser) {
+                alert("Please log in to add to favorites.");
+                window.location.href = "login.html";
+                return;
+            }
+            fetch("/api/favorites/toggle", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ userId: currentUser.id, carId: carId })
+            })
+            .then(res => res.text())
+            .then(msg => {
+                element.classList.toggle("liked");
+                alert(msg);
+            });
+        }
+
+        function bookCar(carId) {
+            if (!currentUser) {
+                alert("Please log in to book a car.");
+                window.location.href = "login.html";
+                return;
+            }
+            const date = prompt("Enter booking date (e.g. 15 July 2026):", "15 July 2026");
+            if (date) {
+                fetch("/api/bookings", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ userId: currentUser.id, carId: carId, bookingDate: date })
+                })
+                .then(res => {
+                    if (res.ok) {
+                        alert("Booking requested successfully!");
+                        window.location.href = "book.html";
+                    } else {
+                        alert("Error making booking.");
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>

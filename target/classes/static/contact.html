@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REVORA Contact Us</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="contact.css">
+<script src="/js/toast-modal.js"></script>
+
+</head>
+
+<body>
+    <header class="head">
+        <div class="logo">
+            <img src="img1.png" alt="Logo">
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="home.html">Home</a></li>
+            <li><a href="cars.html">Cars</a></li>
+            <li><a href="compare.html">Compare</a></li>
+            <li><a href="emi.html">EMI Calculator</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+
+        <div class="right">
+            <a href="cars.html?search=true">
+                <img id="search" src="img5.png" alt="Search">
+            </a>
+
+            <div id="authButtons" style="display: flex; gap: 10px; align-items: center;">
+                <a href="login.html"><button id="log">Login</button></a>
+                <a href="register.html"><button id="reg">Register</button></a>
+            </div>
+        </div>
+    </header>
+
+<!-- HEADER -->
+<section class="contact-header">
+<div class="contact-header-content">
+
+<h1>CONTACT US</h1>
+
+<p>
+At REVORA, we're committed to helping you find your dream car.
+Whether you need assistance with vehicle selection, financing,
+or booking a test drive, our team is ready to assist you.
+</p>
+
+</div>
+</section>
+
+<!-- CONTACT SECTION -->
+<section class="contact-section">
+
+<div class="contact-container">
+
+<!-- INFO -->
+<div class="info-card">
+
+<div class="info-box">
+<h3><i class="fas fa-map-marker-alt"></i> Location</h3>
+<p>REVORA Showroom<br>123 Auto Street<br>Chennai, Tamil Nadu</p>
+</div>
+
+<div class="info-box">
+<h3><i class="fas fa-phone"></i> Phone</h3>
+<p>+91 98765 43210</p>
+</div>
+
+<div class="info-box">
+<h3><i class="fas fa-envelope"></i> Email</h3>
+<p>support@revora.com</p>
+</div>
+
+<div class="info-box">
+<h3><i class="fas fa-clock"></i> Working Hours</h3>
+<p>Mon - Fri : 9 AM - 7 PM<br>Sat : 10 AM - 6 PM<br>Sun : Closed</p>
+</div>
+
+</div>
+
+<!-- FORM -->
+<div class="form-card">
+
+<h2>Send A Message</h2>
+
+<form id="contactForm">
+
+<div class="form-group">
+<input type="text" placeholder="Your Name" required>
+</div>
+
+<div class="form-group">
+<input type="email" placeholder="Email Address" required>
+</div>
+
+<div class="form-group">
+<textarea placeholder="Message" required></textarea>
+</div>
+
+<button class="send-btn">SEND MESSAGE</button>
+
+</form>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- MAP -->
+<section class="map-section">
+<iframe
+src="https://maps.google.com/maps?q=Chennai&t=&z=13&ie=UTF8&iwloc=&output=embed">
+</iframe>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+
+<h3>REVORA</h3>
+<p>Drive your dream with luxury, comfort, and trust.</p>
+
+<div class="social-icons">
+
+<a href="#"><i class="fab fa-facebook-f"></i></a>
+<a href="#"><i class="fab fa-instagram"></i></a>
+<a href="#"><i class="fab fa-x-twitter"></i></a>
+<a href="#"><i class="fab fa-linkedin-in"></i></a>
+
+</div>
+
+<div class="footer-bottom">
+© 2026 REVORA. All Rights Reserved.
+</div>
+
+</footer>
+
+<script>
+// Check local storage for session authentication
+const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+if (currentUser) {
+    const authDiv = document.getElementById("authButtons");
+    if (currentUser.role === 'ADMIN') {
+        authDiv.innerHTML = `
+            <span style="color:white; margin-right:10px;">Hello, Admin</span>
+            <a href="admin.html"><button id="log">Dashboard</button></a>
+            <button id="reg" onclick="logoutUser()">Logout</button>
+        `;
+    } else {
+        authDiv.innerHTML = `
+            <span style="color:white; margin-right:10px;">Hello, ${currentUser.username}</span>
+            <a href="dashboard.html"><button id="log">Dashboard</button></a>
+            <button id="reg" onclick="logoutUser()">Logout</button>
+        `;
+    }
+}
+
+function logoutUser() {
+    localStorage.removeItem("currentUser");
+    window.location.href = "home.html";
+}
+
+document.getElementById("contactForm")
+.addEventListener("submit",function(e){
+    e.preventDefault();
+    
+    const name = document.querySelector("#contactForm input[type='text']").value.trim();
+    const email = document.querySelector("#contactForm input[type='email']").value.trim();
+    const message = document.querySelector("#contactForm textarea").value.trim();
+    
+    const requestData = {
+        name: name,
+        email: email,
+        message: message
+    };
+
+    if (currentUser) {
+        requestData.userId = currentUser.id;
+    }
+
+    fetch("/api/inquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requestData)
+    })
+    .then(res => {
+        if (res.ok) {
+            // Trigger mailto so the user's local email application is prefilled and launched
+            const mailtoUrl = `mailto:sivabharathik38@gmail.com?subject=REVORA Showroom Inquiry&body=Customer Name: ${encodeURIComponent(name)}%0D%0ACustomer Email: ${encodeURIComponent(email)}%0D%0A%0D%0AMessage:%0D%0A${encodeURIComponent(message)}`;
+            window.location.href = mailtoUrl;
+
+            alert("Thank you! Your message has been saved. Opening your mail client to send an email to sivabharathik38@gmail.com...");
+            document.getElementById("contactForm").reset();
+        } else {
+            alert("Error sending message.");
+        }
+    })
+    .catch(err => {
+        console.error("Error:", err);
+        alert("Error sending message.");
+    });
+});
+</script>
+
+</body>
+</html>

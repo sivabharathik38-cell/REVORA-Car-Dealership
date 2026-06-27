@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mercedes Cinematic Luxury - Fast</title>
+<script src="/js/toast-modal.js"></script>
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial, sans-serif;
+}
+body{
+  overflow:hidden;
+  background:#000;
+}
+.scene{
+  width:100vw;
+  height:100vh;
+  position:relative;
+  background:
+    
+    url("deva2.png") center/cover no-repeat;
+  transition:transform 0.6s ease-out, filter 0.6s ease-out;
+}
+.scene::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:radial-gradient(circle at center, transparent 20%, rgba(0,0,0,0.9));
+  pointer-events:none;
+}
+.title{
+  position:absolute;
+  top:40px;
+  left:50px;
+  z-index:10;
+  color:white;
+  opacity:0;
+  transform:translateY(-20px);
+  transition:0.6s ease;
+}
+.title h1{
+  font-size:28px;
+  letter-spacing:3px;
+}
+.title p{
+  font-size:12px;
+  opacity:0.7;
+  margin-top:5px;
+}
+.showTitle{
+  opacity:1;
+  transform:translateY(0);
+}
+.car{
+  position:absolute;
+  width:min(900px, 88vw);
+  left:50%;
+  bottom:1px;
+  transform:translateX(-50%);
+  z-index:2;
+}
+.wheel{
+ position:absolute;
+  width:230px;
+  left:54.5%;
+  top:82%;
+  height:29.4%;
+  transform:translate(-50%,-50%);
+  z-index:3;
+  transform-origin:center center;
+}
+
+.stage1{
+  transform:translate(-50%,-50%) scale(1.7);
+}
+.stage2{
+  transform:translate(-50%,-50%) scale(3.0);
+}
+.stage3{
+  transform:translate(-50%,-50%) scale(5.2);
+}
+.spin{
+  animation:spin 1.2s ease-out forwards;
+}
+@keyframes spin{
+  0%{
+    transform:translate(-50%,-50%) rotate(0deg) scale(1.7);
+  }
+  100%{
+    transform:translate(-50%,-50%) rotate(1440deg) scale(6);
+  }
+}
+#btn{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  padding:15px 45px;
+  background:linear-gradient(135deg,#D4AF37,#b88a2a);
+  border:none;
+  font-weight:bold;
+  cursor:pointer;
+  z-index:20;
+  letter-spacing:2px;
+  border-radius:30px;
+}
+.hideBtn{
+  opacity:0;
+  pointer-events:none;
+  transition:0.3s ease;
+}
+.register{
+  position:fixed;
+  inset:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:rgba(0,0,0,0.92);
+  opacity:0;
+  visibility:hidden;
+  transition:0.6s ease;
+  z-index:50;
+}
+.register.active{
+  opacity:1;
+  visibility:visible;
+}
+.form{
+  width:380px;
+  padding:30px;
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(20px);
+  border-radius:20px;
+  color:white;
+  transform:translateY(60px) scale(0.95);
+  opacity:0;
+}
+.form.show{
+  animation:formIn 0.6s forwards;
+}
+@keyframes formIn{
+  to{
+    opacity:1;
+    transform:translateY(0) scale(1);
+  }
+}
+input{
+  width:100%;
+  padding:12px;
+  margin:10px 0;
+  border:none;
+  outline:none;
+  border-radius:10px;
+  background:rgba(255,255,255,0.1);
+  color:white;
+}
+button.formBtn{
+  width:100%;
+  padding:12px;
+  background:#D4AF37;
+  border:none;
+  font-weight:bold;
+  border-radius:10px;
+  cursor:pointer;
+}
+</style>
+</head>
+<body>
+
+<div class="scene" id="scene">
+  <div class="title" id="title">
+    <h1>DRIVE YOUR DREAM</h1>
+    <p>Mercedes-Benz Luxury Experience</p>
+  </div>
+
+  <img src="reg1car.png" class="car" alt="Mercedes-AMG GT">
+  <img src="wheel1.png" class="wheel" id="wheel" alt="Mercedes wheel">
+</div>
+
+<button id="btn" style="display: none;">REGISTER</button>
+
+<div class="register" id="register">
+  <div class="form" id="form">
+    <h2>Create Account</h2>
+    <input id="fullNameInput" placeholder="Full Name">
+    <input id="emailInput" placeholder="Email">
+    <input id="passwordInput" placeholder="Password" type="password">
+    <button class="formBtn" onclick="submitRegister()">START JOURNEY</button>
+    <p style="margin-top: 15px; text-align: center; font-size: 14px;">Already have an account? <a href="login.html" style="color: #D4AF37; text-decoration: none; font-weight: bold;">Login here</a></p>
+    <p style="margin-top: 10px; text-align: center; font-size: 14px;"><a href="home.html" style="color: #ccc; text-decoration: none;">← Back to Home</a></p>
+  </div>
+</div>
+
+<script>
+const btn = document.getElementById("btn");
+const scene = document.getElementById("scene");
+const wheel = document.getElementById("wheel");
+const register = document.getElementById("register");
+const form = document.getElementById("form");
+const title = document.getElementById("title");
+
+btn.addEventListener("click", () => {
+  btn.classList.add("hideBtn");
+
+  setTimeout(() => {
+    title.classList.add("showTitle");
+  }, 100);
+
+  setTimeout(() => {
+    scene.classList.add("stage1");
+  }, 300);
+
+  setTimeout(() => {
+    wheel.classList.add("spin");
+  }, 600);
+
+  setTimeout(() => {
+    scene.classList.remove("stage1");
+    scene.classList.add("stage2");
+  }, 1000);
+
+  setTimeout(() => {
+    scene.classList.remove("stage2");
+    scene.classList.add("stage3");
+  }, 1400);
+
+  setTimeout(() => {
+    register.classList.add("active");
+  }, 1700);
+
+  setTimeout(() => {
+    form.classList.add("show");
+  }, 1900);
+});
+
+// Automatically trigger transition on load
+window.onload = function() {
+  setTimeout(() => {
+    btn.click();
+  }, 100);
+};
+
+function submitRegister() {
+  const username = document.getElementById("fullNameInput").value.trim();
+  const email = document.getElementById("emailInput").value.trim();
+  const password = document.getElementById("passwordInput").value.trim();
+
+  if (!username || !email || !password) {
+    alert("Please fill in all fields");
+    return;
+  }
+
+  fetch("/api/users/register", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, email, password, role: "USER" })
+  })
+  .then(res => {
+    if (!res.ok) {
+      return res.text().then(text => { throw new Error(text); });
+    }
+    return res.json();
+  })
+  .then(user => {
+    alert("Registration successful! Please log in.");
+    window.location.href = "login.html";
+  })
+  .catch(err => {
+    alert("Registration failed: " + err.message);
+  });
+}
+</script>
+
+</body>
+</html>

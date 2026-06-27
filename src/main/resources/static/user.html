@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REVORA - Manage Users</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="/js/toast-modal.js"></script>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+}
+
+/* HEADER */
+.header{
+    height:70px;
+    background:#111827;
+    color:white;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 30px;
+}
+
+.logo{
+    font-size:28px;
+    font-weight:bold;
+    color:#4f8cff;
+}
+
+/* LAYOUT */
+.container{
+    display:flex;
+    min-height:calc(100vh - 70px);
+}
+
+/* SIDEBAR */
+.sidebar{
+    width:250px;
+    background:#1f2937;
+    color:white;
+}
+
+.sidebar ul{
+    list-style:none;
+}
+
+.sidebar ul li{
+    padding:15px 25px;
+    cursor:pointer;
+    transition:0.3s;
+
+    display:flex;
+    align-items:center;
+    gap:12px;   /* consistent spacing */
+}
+
+.sidebar ul li i{
+    width:22px;
+    text-align:center;
+}
+.sidebar ul li:hover{
+    background:#374151;
+}
+
+.sidebar ul li.active{
+    background:#2563eb;
+}
+
+/* MAIN */
+.main{
+    flex:1;
+    padding:30px;
+}
+
+.page-title{
+    margin-bottom:25px;
+}
+
+/* TABLE */
+.table-box{
+    background:white;
+    border-radius:15px;
+    padding:20px;
+    box-shadow:0 3px 10px rgba(0,0,0,.08);
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:600px;
+}
+
+th{
+    background:#f3f4f6;
+    padding:12px;
+    text-align:left;
+}
+
+td{
+    padding:12px;
+    border-bottom:1px solid #ddd;
+}
+
+/* BUTTONS */
+.btn{
+    border:none;
+    padding:8px 15px;
+    border-radius:6px;
+    color:white;
+    cursor:pointer;
+    margin-right:5px;
+}
+
+.view{ background:#2563eb; }
+.delete{ background:#dc2626; }
+
+/* STATUS */
+.status{
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:600;
+}
+
+.active-user{
+    background:#d1fae5;
+    color:#065f46;
+}
+
+.inactive-user{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+    .container{
+        flex-direction:column;
+    }
+
+    .sidebar{
+        width:100%;
+        display:flex;
+        overflow-x:auto;
+    }
+
+    .sidebar ul{
+        display:flex;
+    }
+
+    .sidebar ul li{
+        white-space:nowrap;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <div class="logo">REVORA ADMIN</div>
+    <div><i class="fas fa-user-circle fa-2x"></i></div>
+</div>
+
+<div class="container">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <ul>
+            <li onclick="go('admin.html')">
+                <i class="fas fa-chart-line"></i>
+                 Dashboard
+            </li>
+            <li onclick="go('manage.html')"><i class="fas fa-car"></i> Manage Cars</li>
+            <li class="active"><i class="fas fa-users"></i> Manage Users</li>
+            <li onclick="go('mbook.html')"><i class="fas fa-calendar-check"></i> Manage Bookings</li>
+            <li onclick="go('mquery.html')"><i class="fas fa-envelope"></i> Manage Inquiries</li>
+            <li onclick="go('report.html')"><i class="fas fa-file-alt"></i> Reports</li>
+            <li onclick="window.location.href='home.html'"><i class="fas fa-car-side"></i> View Showroom</li>
+            <li onclick="logout()">
+             <i class="fas fa-sign-out-alt"></i> Logout
+            </li>
+        </ul>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+
+        <div class="page-title">
+            <h2>Manage Users</h2>
+        </div>
+
+        <div class="table-box">
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                    <!-- Loaded dynamically -->
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+<script>
+// Check local storage for session authentication
+const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+if (!currentUser || currentUser.role !== "ADMIN") {
+    window.location.href = "login.html";
+} else {
+    loadManageUsers();
+}
+
+function loadManageUsers() {
+    fetch("/api/users")
+        .then(res => res.json())
+        .then(users => {
+            const tbody = document.getElementById("usersTableBody");
+            tbody.innerHTML = "";
+
+            users.forEach(user => {
+                const tr = document.createElement("tr");
+                const phoneVal = user.phone || "N/A";
+                const emailVal = user.email || "N/A";
+                
+                tr.innerHTML = `
+                    <td>U00${user.id}</td>
+                    <td>${user.username}</td>
+                    <td>${emailVal}</td>
+                    <td>${phoneVal}</td>
+                    <td><span class="status active-user">${user.role}</span></td>
+                    <td>
+                        <button class="btn view" onclick="viewUser(${user.id})">View</button>
+                        <button class="btn delete" onclick="deleteUser(${user.id})">Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        })
+        .catch(err => console.error("Error fetching users:", err));
+}
+
+function go(page){
+    window.location.href = page;
+}
+
+function viewUser(id){
+    alert("Details for User ID " + id + " requested.");
+}
+
+function deleteUser(id){
+    confirmAction("Are you sure you want to delete user U00" + id + "?", "Confirm Delete").then(confirmed => {
+        if(confirmed){
+            fetch(`/api/users/${id}`, {
+                method: "DELETE"
+            })
+            .then(res => {
+                if (res.ok) {
+                    alert("User deleted successfully.");
+                    loadManageUsers();
+                } else {
+                    alert("Error deleting user.");
+                }
+            });
+        }
+    });
+}
+
+function logout() {
+    confirmAction("Are you sure you want to logout?", "Confirm Logout").then(confirmed => {
+        if (confirmed) {
+            localStorage.removeItem("currentUser");
+            window.location.href = "login.html";
+        }
+    });
+}
+</script>
+
+</html>

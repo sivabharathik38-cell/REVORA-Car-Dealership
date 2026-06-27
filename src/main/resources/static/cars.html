@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <link rel="stylesheet" href="cars.css">
+     <script src="/js/toast-modal.js"></script>
+     
+</head>
+<body>
+        <header class="head">
+        <div class="logo">
+            <img src="img1.png" alt="Logo"> 
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="home.html">Home</a></li>
+            <li><a href="cars.html">Cars</a></li>
+            <li><a href="compare.html">Compare</a></li>
+            <li><a href="emi.html">EMI Calculator</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+
+        <div class="right">
+            <a href="cars.html?search=true">
+                <img id="search" src="img5.png" alt="Search">
+            </a>
+
+            <div id="authButtons" style="display: flex; gap: 10px; align-items: center;">
+                <a href="login.html"><button id="log">Login</button></a>
+                <a href="register.html"><button id="reg">Register</button></a>
+            </div>
+        </div>
+    </header>
+    <div  class="top">
+        <h1>All Cars</h1>
+         <p>Home/cars</p>
+    </div>
+    
+
+    
+    <section class="sec1">
+
+    <div class="sidebar">
+        <h2>Filter Cars</h2>
+
+        <h3>Search Cars</h3>
+        <input id ="search1"type="text" placeholder="Search Cars">
+
+        <h3>Brands</h3>
+        <select id ="brand">
+            <option value="All brands">All brands</option>
+        </select>
+
+        <h3>Fuel Type</h3>
+        <label><input type="checkbox" class="fuel-filter" value="Petrol"> Petrol</label><br>
+        <label><input type="checkbox" class="fuel-filter" value="Diesel"> Diesel</label><br>
+        <label><input type="checkbox" class="fuel-filter" value="Electric"> Electric</label><br>
+
+        <h3>Transmission</h3>
+        <label><input type="checkbox" class="trans-filter" value="Manual"> Manual</label><br>
+        <label><input type="checkbox" class="trans-filter" value="Automatic"> Automatic</label>
+
+        <h3>Price Range</h3>
+
+        <div class="price">
+            <span>₹ 0</span>
+            <span>₹ 50,00,000+</span>
+        </div>
+
+        <input type="range"
+               id="pricerange"
+               min="0"
+               max="5000000"
+               value="2500000">
+
+        <h3>Sort By</h3>
+
+        <select id="sort">
+            <option>Latest</option>
+            <option>Price Low to High</option>
+            <option>Price High to Low</option>
+        </select>
+
+        <br><br>
+
+        <button class="apply">Apply Filter</button>
+        <br><br>
+        <button class="reset">Reset Filters</button>
+
+    </div>
+
+    <div class="content">
+        <h3>Showing 1-12 of 42 cars</h3>
+
+        <div class="allcar">
+
+            <div class="car">
+                 <span class="heart">❤</span>
+                <img src="https://c.ndtvimg.com/2020-12/i5fas99_toyota-fortuner-facelift_625x300_23_December_20.png" alt="">
+                <h2>Toyota Fortuner</h2>
+                <p>₹ 40 Lakh</p>
+                <button>Add to cart</button>
+            </div>
+
+            <div class="car">
+                <span class="heart">❤</span>
+                <img src="https://cdn.carhp.in/honda/honda_city_platinum_white_pearl.jpg?format=webp&width=800&q=75" alt="">
+                <h2>Honda City</h2>
+                <p>₹ 13.2 Lakh</p>
+                <button>Add to cart</button>
+            </div>
+
+            <div class="car">
+                <span class="heart">❤</span>
+                <img src="https://images.91wheels.com/assets/c_images/gallery/kia/seltos/kia-seltos-0-1768365864.png?w=850&q=40" alt="">
+                <h2>Kia Seltos</h2>
+                <p>₹ 16.8 Lakh</p>
+                <button>Add to cart</button>
+            </div>
+
+            <div class="car">
+                <span class="heart">❤</span>
+                <img src="https://images.91wheels.com/assets/c_images/gallery/tata/nexon/tata-nexon-0-1769674747.png?w=850&q=40" alt="">
+                <h2>Tata Nexon</h2>
+                <p>₹ 10.3 Lakh</p>
+                <button>Add to cart</button>
+            </div>
+
+            <div class="car">
+                <span class="heart">❤</span>
+                <img src="https://c.ndtvimg.com/2024-07/dg95r5f8_mahindra-xuv700-dark-knight-edition_625x300_09_July_24.jpg?im=FaceCrop,algorithm=dnn,width=1200,height=738" alt="">
+                <h2>Mahindra XUV700</h2>
+                <p>₹ 21.5 Lakh</p>
+                <button>Add to cart</button>
+            </div>
+
+            <div class="car">
+                <span class="heart">❤</span>
+                <img src="https://parkplus-bkt-img.parkplus.io/production/chariot_staging/public/whitecandywhitejpgimage_20230808185708683962.jpg" alt="">
+                <h2>Skoda Slavia</h2>
+                <p>₹ 15.4 Lakh</p>
+                <button>Add to cart</button>
+            </div>
+            <div class="car">
+                 <span class="heart">❤</span>
+                <img src="https://c.ndtvimg.com/2020-12/i5fas99_toyota-fortuner-facelift_625x300_23_December_20.png" alt="">
+                <h2>Toyota Fortuner</h2>
+                <p>₹ 40 Lakh</p>
+                <button>Add to cart</button>
+            </div>
+
+            <div class="car">
+                <span class="heart">❤</span>
+                <img src="https://cdn.carhp.in/honda/honda_city_platinum_white_pearl.jpg?format=webp&width=800&q=75" alt="">
+                <h2>Honda City</h2>
+                <p>₹ 13.2 Lakh</p>
+                <button>Add to cart</button>
+            </div>
+
+            <div class="car">
+                <span class="heart">❤</span>
+                <img src="https://images.91wheels.com/assets/c_images/gallery/kia/seltos/kia-seltos-0-1768365864.png?w=850&q=40" alt="">
+                <h2>Kia Seltos</h2>
+                <p>₹ 16.8 Lakh</p>
+                <button>Add to cart</button>
+            </div>
+
+            <div class="car">
+                <span class="heart">❤</span>
+                <img src="https://images.91wheels.com/assets/c_images/gallery/tata/nexon/tata-nexon-0-1769674747.png?w=850&q=40" alt="">
+                <h2>Tata Nexon</h2>
+                <p>₹ 10.3 Lakh</p>
+                <button>Add to cart</button>
+            </div>
+
+            <div class="car">
+                <span class="heart">❤</span>
+                <img src="https://c.ndtvimg.com/2024-07/dg95r5f8_mahindra-xuv700-dark-knight-edition_625x300_09_July_24.jpg?im=FaceCrop,algorithm=dnn,width=1200,height=738" alt="">
+                <h2>Mahindra XUV700</h2>
+                <p>₹ 21.5 Lakh</p>
+                <button>Add to cart</button>
+            </div>
+
+            <div class="car">
+                <span class="heart">❤</span>
+                <img src="https://parkplus-bkt-img.parkplus.io/production/chariot_staging/public/whitecandywhitejpgimage_20230808185708683962.jpg" alt="">
+                <h2>Skoda Slavia</h2>
+                <p>₹ 15.4 Lakh</p>
+                <button>Add to cart</button>
+            </div>
+            <div class="car">
+                 <span class="heart">❤</span>
+                <img src="https://c.ndtvimg.com/2020-12/i5fas99_toyota-fortuner-facelift_625x300_23_December_20.png" alt="">
+                <h2>Toyota Fortuner</h2>
+                <p>₹ 40 Lakh</p>
+                <button>Add to cart</button>
+            </div>
+
+            <div class="car">
+                <span class="heart">❤</span>
+                <img src="https://cdn.carhp.in/honda/honda_city_platinum_white_pearl.jpg?format=webp&width=800&q=75" alt="">
+                <h2>Honda City</h2>
+                <p>₹ 13.2 Lakh</p>
+                <button>Add to cart</button>
+            </div>
+
+            <div class="car">
+                <span class="heart">❤</span>
+                <img src="https://images.91wheels.com/assets/c_images/gallery/kia/seltos/kia-seltos-0-1768365864.png?w=850&q=40" alt="">
+                <h2>Kia Seltos</h2>
+                <p>₹ 16.8 Lakh</p>
+                <button>Add to cart</button>
+            </div>
+
+            <div class="car">
+                <span class="heart">❤</span>
+                <img src="https://images.91wheels.com/assets/c_images/gallery/tata/nexon/tata-nexon-0-1769674747.png?w=850&q=40" alt="">
+                <h2>Tata Nexon</h2>
+                <p>₹ 10.3 Lakh</p>
+                <button>Add to cart</button>
+            </div>
+
+            <div class="car">
+                <span class="heart">❤</span>
+                <img src="https://c.ndtvimg.com/2024-07/dg95r5f8_mahindra-xuv700-dark-knight-edition_625x300_09_July_24.jpg?im=FaceCrop,algorithm=dnn,width=1200,height=738" alt="">
+                <h2>Mahindra XUV700</h2>
+                <p>₹ 21.5 Lakh</p>
+                <button>Add to cart</button>
+            </div>
+
+            <div class="car">
+                <span class="heart">❤</span>
+                <img src="https://parkplus-bkt-img.parkplus.io/production/chariot_staging/public/whitecandywhitejpgimage_20230808185708683962.jpg" alt="">
+                <h2>Skoda Slavia</h2>
+                <p>₹ 15.4 Lakh</p>
+                <button>Add to cart</button>
+            </div><div class="car">
+                 <span class="heart">❤</span>
+                <img src="https://c.ndtvimg.com/2020-12/i5fas99_toyota-fortuner-facelift_625x300_23_December_20.png" alt="">
+                <h2>Toyota Fortuner</h2>
+                <p>₹ 40 Lakh</p>
+                <button>Add to cart</button>
+            </div>
+
+            <div class="car">
+                <span class="heart">❤</span>
+                <img src="https://cdn.carhp.in/honda/honda_city_platinum_white_pearl.jpg?format=webp&width=800&q=75" alt="">
+                <h2>Honda City</h2>
+                <p>₹ 13.2 Lakh</p>
+                <button>Add to cart</button>
+            </div>
+
+            <div class="car">
+                <span class="heart">❤</span>
+                <img src="https://images.91wheels.com/assets/c_images/gallery/kia/seltos/kia-seltos-0-1768365864.png?w=850&q=40" alt="">
+                <h2>Kia Seltos</h2>
+                <p>₹ 16.8 Lakh</p>
+                <button>Add to cart</button>
+            </div>
+
+            <div class="car">
+                <span class="heart">❤</span>
+                <img src="https://images.91wheels.com/assets/c_images/gallery/tata/nexon/tata-nexon-0-1769674747.png?w=850&q=40" alt="">
+                <h2>Tata Nexon</h2>
+                <p>₹ 10.3 Lakh</p>
+                <button>Add to cart</button>
+            </div>
+
+            <div class="car">
+                <span class="heart">❤</span>
+                <img src="https://c.ndtvimg.com/2024-07/dg95r5f8_mahindra-xuv700-dark-knight-edition_625x300_09_July_24.jpg?im=FaceCrop,algorithm=dnn,width=1200,height=738" alt="">
+                <h2>Mahindra XUV700</h2>
+                <p>₹ 21.5 Lakh</p>
+                <button>Add to cart</button>
+            </div>
+
+            <div class="car">
+                <span class="heart">❤</span>
+                <img src="https://parkplus-bkt-img.parkplus.io/production/chariot_staging/public/whitecandywhitejpgimage_20230808185708683962.jpg" alt="">
+                <h2>Skoda Slavia</h2>
+                <p>₹ 15.4 Lakh</p>
+                <button>Add to cart</button>
+            </div>
+            
+            
+        
+
+    </div>
+    <div class="page">
+        <button onclick="showpage(1)">1</button>
+        <button onclick="showpage(2)">2</button>
+        <button onclick="showpage(3)">3</button>
+    </div>
+   
+    
+    
+
+</section>
+<script>
+// Check local storage for session authentication
+const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+if (currentUser) {
+    const authDiv = document.getElementById("authButtons");
+    if (currentUser.role === 'ADMIN') {
+        authDiv.innerHTML = `
+            <span style="color:white; margin-right:10px;">Hello, Admin</span>
+            <a href="admin.html"><button id="log">Dashboard</button></a>
+            <button id="reg" onclick="logoutUser()">Logout</button>
+        `;
+    } else {
+        authDiv.innerHTML = `
+            <span style="color:white; margin-right:10px;">Hello, ${currentUser.username}</span>
+            <a href="dashboard.html"><button id="log">Dashboard</button></a>
+            <button id="reg" onclick="logoutUser()">Logout</button>
+        `;
+    }
+}
+
+function logoutUser() {
+    localStorage.removeItem("currentUser");
+    window.location.href = "home.html";
+}
+
+let allCarsList = [];
+let currentPage = 1;
+const carsperpage = 8;
+
+// Populate brands dropdown and load all cars on load
+document.addEventListener("DOMContentLoaded", function() {
+    // Fetch distinct brands
+    fetch("/api/cars/brands")
+        .then(res => res.json())
+        .then(brands => {
+            const brandSelect = document.getElementById("brand");
+            brands.forEach(brand => {
+                const opt = document.createElement("option");
+                opt.value = brand;
+                opt.innerText = brand;
+                brandSelect.appendChild(opt);
+            });
+        });
+
+    loadCars();
+
+    // Wire up filter buttons
+    document.querySelector(".apply").addEventListener("click", applyFilters);
+    document.querySelector(".reset").addEventListener("click", resetFilters);
+
+    // Auto-focus search input if URL has ?search=true
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('search') === 'true') {
+        const searchInput = document.getElementById("search1");
+        if (searchInput) {
+            setTimeout(() => {
+                searchInput.focus();
+                searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 300);
+        }
+    }
+});
+
+function loadCars(url = "/api/cars") {
+    fetch(url)
+        .then(res => res.json())
+        .then(cars => {
+            allCarsList = cars;
+            renderPage(1);
+            updatePageControls();
+        })
+        .catch(err => console.error("Error loading cars:", err));
+}
+
+function renderPage(page) {
+    currentPage = page;
+    const resultsGrid = document.querySelector(".allcar");
+    resultsGrid.innerHTML = "";
+
+    const start = (page - 1) * carsperpage;
+    const end = start + carsperpage;
+    const pageCars = allCarsList.slice(start, end);
+
+    document.querySelector(".content h3").innerText = `Showing ${start + 1}-${Math.min(end, allCarsList.length)} of ${allCarsList.length} cars`;
+
+    if (pageCars.length === 0) {
+        resultsGrid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; font-size: 18px; margin-top: 40px; color: #888;">No cars found matching filters.</p>`;
+        return;
+    }
+
+    // Fetch user favorites to highlight liked hearts
+    const favoriteIds = new Set();
+    if (currentUser) {
+        fetch(`/api/favorites?userId=${currentUser.id}`)
+            .then(res => res.json())
+            .then(favs => {
+                favs.forEach(f => favoriteIds.add(f.car.id));
+                renderCarCards(pageCars, resultsGrid, favoriteIds);
+            });
+    } else {
+        renderCarCards(pageCars, resultsGrid, favoriteIds);
+    }
+}
+
+function renderCarCards(cars, container, favoriteIds) {
+    cars.forEach(car => {
+        const carDiv = document.createElement("div");
+        carDiv.className = "car";
+        
+        const isLiked = favoriteIds.has(car.id) ? "liked" : "";
+
+        carDiv.innerHTML = `
+            <span class="heart ${isLiked}" onclick="toggleFav(event, ${car.id}, this)">❤</span>
+            <img src="${car.img}" alt="${car.name}" style="cursor: pointer;" onclick="window.location.href='details.html?id=${car.id}'">
+            <h2 style="cursor: pointer;" onclick="window.location.href='details.html?id=${car.id}'">${car.name}</h2>
+            <p>${car.priceText}</p>
+            <button onclick="bookCar(${car.id})">Book Now</button>
+        `;
+        container.appendChild(carDiv);
+    });
+}
+
+function updatePageControls() {
+    const totalPages = Math.ceil(allCarsList.length / carsperpage);
+    const paginationContainer = document.querySelector(".page");
+    paginationContainer.innerHTML = "";
+
+    for (let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement("button");
+        btn.innerText = i;
+        if (i === currentPage) {
+            btn.style.backgroundColor = "red";
+            btn.style.color = "white";
+        }
+        btn.addEventListener("click", () => renderPage(i));
+        paginationContainer.appendChild(btn);
+    }
+}
+
+function applyFilters() {
+    const search = document.getElementById("search1").value.trim();
+    const brand = document.getElementById("brand").value;
+    const maxPrice = document.getElementById("pricerange").value;
+    const sort = document.getElementById("sort").value;
+
+    // Get checked fuels
+    const fuels = [];
+    document.querySelectorAll(".fuel-filter:checked").forEach(cb => fuels.push(cb.value));
+
+    // Get checked transmissions
+    const transmissions = [];
+    document.querySelectorAll(".trans-filter:checked").forEach(cb => transmissions.push(cb.value));
+
+    // Build URL parameters
+    let params = new URLSearchParams();
+    if (search) params.append("query", search);
+    if (brand && brand !== "All brands") params.append("brand", brand);
+    if (maxPrice) params.append("maxPrice", maxPrice);
+    if (sort) params.append("sort", sort);
+    fuels.forEach(f => params.append("fuel", f));
+    transmissions.forEach(t => params.append("transmission", t));
+
+    loadCars(`/api/cars/search?${params.toString()}`);
+}
+
+function resetFilters() {
+    document.getElementById("search1").value = "";
+    document.getElementById("brand").value = "All brands";
+    document.getElementById("pricerange").value = 2500000;
+    document.querySelectorAll(".fuel-filter:checked").forEach(cb => cb.checked = false);
+    document.querySelectorAll(".trans-filter:checked").forEach(cb => cb.checked = false);
+    document.getElementById("sort").value = "Latest";
+
+    loadCars();
+}
+
+function toggleFav(event, carId, element) {
+    event.stopPropagation();
+    if (!currentUser) {
+        alert("Please log in to add to favorites.");
+        window.location.href = "login.html";
+        return;
+    }
+    fetch("/api/favorites/toggle", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: currentUser.id, carId: carId })
+    })
+    .then(res => res.text())
+    .then(msg => {
+        element.classList.toggle("liked");
+        alert(msg);
+    });
+}
+
+function bookCar(carId) {
+    if (!currentUser) {
+        alert("Please log in to book a car.");
+        window.location.href = "login.html";
+        return;
+    }
+    const date = prompt("Enter booking date (e.g. 15 July 2026):", "15 July 2026");
+    if (date) {
+        fetch("/api/bookings", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ userId: currentUser.id, carId: carId, bookingDate: date })
+        })
+        .then(res => {
+            if (res.ok) {
+                alert("Booking requested successfully!");
+                window.location.href = "book.html";
+            } else {
+                alert("Error making booking.");
+            }
+        });
+    }
+}
+</script>
+
+    
+</body>
+
+</html>

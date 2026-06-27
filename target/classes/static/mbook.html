@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REVORA - Manage Bookings</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="/js/toast-modal.js"></script>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+}
+
+/* HEADER */
+.header{
+    height:70px;
+    background:#111827;
+    color:white;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 30px;
+}
+
+.logo{
+    font-size:28px;
+    font-weight:bold;
+    color:#4f8cff;
+}
+
+/* LAYOUT */
+.container{
+    display:flex;
+    min-height:calc(100vh - 70px);
+}
+
+/* SIDEBAR */
+.sidebar{
+    width:250px;
+    background:#1f2937;
+    color:white;
+}
+
+.sidebar ul{
+    list-style:none;
+}
+
+.sidebar ul li{
+    padding:15px 25px;
+    cursor:pointer;
+    transition:0.3s;
+
+    display:flex;
+    align-items:center;
+    gap:12px;   /* consistent spacing */
+}
+
+.sidebar ul li i{
+    width:22px;
+    text-align:center;
+}
+
+.sidebar ul li:hover{
+    background:#374151;
+}
+
+
+
+.active{
+    background:#2563eb;
+}
+
+/* MAIN */
+.main{
+    flex:1;
+    padding:30px;
+}
+
+.page-title{
+    margin-bottom:25px;
+}
+
+/* TABLE BOX */
+.table-box{
+    background:white;
+    border-radius:15px;
+    padding:20px;
+    box-shadow:0 3px 10px rgba(0,0,0,.08);
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:650px;
+}
+
+th{
+    background:#f3f4f6;
+    padding:12px;
+    text-align:left;
+}
+
+td{
+    padding:12px;
+    border-bottom:1px solid #ddd;
+}
+
+/* STATUS */
+.status{
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:600;
+}
+
+.pending{
+    background:#FEF3C7;
+    color:#92400E;
+}
+
+.approved{
+    background:#D1FAE5;
+    color:#065F46;
+}
+
+.rejected{
+    background:#FEE2E2;
+    color:#991B1B;
+}
+
+/* BUTTONS */
+.btn{
+    border:none;
+    padding:8px 12px;
+    border-radius:6px;
+    color:white;
+    cursor:pointer;
+    margin-right:5px;
+    transition:0.2s;
+}
+
+.btn:hover{
+    transform:scale(1.05);
+}
+
+.approve-btn{ background:#16A34A; }
+.reject-btn{ background:#DC2626; }
+.view-btn{ background:#2563EB; }
+
+/* MOBILE */
+@media(max-width:768px){
+    .container{
+        flex-direction:column;
+    }
+
+    .sidebar{
+        width:100%;
+        display:flex;
+        overflow-x:auto;
+    }
+
+    .sidebar ul{
+        display:flex;
+    }
+
+    .sidebar ul li{
+        white-space:nowrap;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <div class="logo">REVORA ADMIN</div>
+    <div><i class="fas fa-user-circle fa-2x"></i></div>
+</div>
+
+<div class="container">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <ul>
+            <li onclick="go('admin.html')"><i class="fas fa-chart-line"></i> Dashboard</li>
+            <li onclick="go('manage.html')"><i class="fas fa-car"></i> Manage Cars</li>
+            <li onclick="go('user.html')"><i class="fas fa-users"></i> Manage Users</li>
+            <li class="active"><i class="fas fa-calendar-check"></i> Manage Bookings</li>
+            <li onclick="go('mquery.html')"><i class="fas fa-envelope"></i> Manage Inquiries</li>
+            <li onclick="go('report.html')"><i class="fas fa-file-alt"></i> Reports</li>
+            <li onclick="window.location.href='home.html'"><i class="fas fa-car-side"></i> View Showroom</li>
+            <li onclick="logout()">
+             <i class="fas fa-sign-out-alt"></i> Logout
+            </li>
+        </ul>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+
+        <div class="page-title">
+            <h2>Manage Bookings</h2>
+        </div>
+
+        <div class="table-box">
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Booking ID</th>
+                        <th>User</th>
+                        <th>Car</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="adminBookingsTableBody">
+                    <!-- Loaded dynamically -->
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- SCRIPT -->
+<script>
+// Check local storage for session authentication
+const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+if (!currentUser || currentUser.role !== "ADMIN") {
+    window.location.href = "login.html";
+} else {
+    loadManageBookings();
+}
+
+function loadManageBookings() {
+    fetch("/api/bookings")
+        .then(res => res.json())
+        .then(bookings => {
+            const tbody = document.getElementById("adminBookingsTableBody");
+            tbody.innerHTML = "";
+
+            bookings.forEach(b => {
+                const tr = document.createElement("tr");
+                
+                let statusClass = "pending";
+                if (b.status === "Approved") statusClass = "approved";
+                else if (b.status === "Rejected") statusClass = "rejected";
+
+                let actions = "";
+                if (b.status === "Pending") {
+                    actions = `
+                        <button class="btn approve-btn" onclick="updateBookingStatus(${b.id}, 'Approved')">Approve</button>
+                        <button class="btn reject-btn" onclick="updateBookingStatus(${b.id}, 'Rejected')">Reject</button>
+                    `;
+                } else {
+                    actions = `<button class="btn view-btn" onclick="viewBooking(${b.id})">View</button>`;
+                }
+
+                tr.innerHTML = `
+                    <td>B00${b.id}</td>
+                    <td>${b.user.username}</td>
+                    <td>${b.car.name}</td>
+                    <td>${b.bookingDate}</td>
+                    <td><span class="status ${statusClass}">${b.status}</span></td>
+                    <td>${actions}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        })
+        .catch(err => console.error("Error fetching bookings:", err));
+}
+
+function go(page){
+    window.location.href = page;
+}
+
+function updateBookingStatus(id, status){
+    fetch(`/api/bookings/${id}/status?status=${status}`, {
+        method: "PUT"
+    })
+    .then(res => {
+        if (res.ok) {
+            alert(`Booking B00${id} has been ${status}`);
+            loadManageBookings();
+        } else {
+            alert("Error updating booking status.");
+        }
+    });
+}
+
+function viewBooking(id){
+    alert("Viewing Booking details for ID: B00" + id);
+}
+
+function logout() {
+    confirmAction("Are you sure you want to logout?", "Confirm Logout").then(confirmed => {
+        if (confirmed) {
+            localStorage.removeItem("currentUser");
+            window.location.href = "login.html";
+        }
+    });
+}
+</script>
+
+</body>
+</html>

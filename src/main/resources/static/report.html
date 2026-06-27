@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REVORA - Reports</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="/js/toast-modal.js"></script>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+}
+
+/* HEADER */
+.header{
+    height:70px;
+    background:#111827;
+    color:white;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 30px;
+}
+
+.logo{
+    font-size:28px;
+    font-weight:bold;
+    color:#4f8cff;
+}
+
+/* LAYOUT */
+.container{
+    display:flex;
+    min-height:calc(100vh - 70px);
+}
+
+/* SIDEBAR */
+.sidebar{
+    width:250px;
+    background:#1f2937;
+    color:white;
+}
+
+.sidebar ul{
+    list-style:none;
+}
+
+.sidebar ul li{
+    padding:15px 25px;
+    cursor:pointer;
+    transition:0.3s;
+
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.sidebar ul li i{
+    width:22px;
+    text-align:center;
+}
+
+.sidebar ul li:hover{
+    background:#374151;
+}
+
+/* ACTIVE PAGE */
+.sidebar ul li.active{
+    background:#2563eb;
+}
+
+/* MAIN */
+.main{
+    flex:1;
+    padding:30px;
+}
+
+.page-title{
+    margin-bottom:25px;
+}
+
+/* REPORT CARDS */
+.report-cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 3px 10px rgba(0,0,0,.08);
+    text-align:center;
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+.card i{
+    font-size:40px;
+    color:#2563eb;
+    margin-bottom:15px;
+}
+
+.card h2{
+    margin-bottom:10px;
+}
+
+.card p{
+    color:#666;
+}
+
+.download-btn{
+    margin-top:15px;
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:10px 18px;
+    border-radius:8px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.download-btn:hover{
+    background:#1d4ed8;
+}
+
+/* SUMMARY */
+.summary{
+    background:white;
+    margin-top:30px;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 3px 10px rgba(0,0,0,.08);
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:600px;
+}
+
+th{
+    background:#f3f4f6;
+    padding:12px;
+    text-align:left;
+}
+
+td{
+    padding:12px;
+    border-bottom:1px solid #ddd;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+    .container{
+        flex-direction:column;
+    }
+
+    .sidebar{
+        width:100%;
+        display:flex;
+        overflow-x:auto;
+    }
+
+    .sidebar ul{
+        display:flex;
+    }
+
+    .sidebar ul li{
+        white-space:nowrap;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <div class="logo">REVORA ADMIN</div>
+    <div><i class="fas fa-user-circle fa-2x"></i></div>
+</div>
+
+<div class="container">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <ul>
+            <li onclick="go('admin.html')">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </li>
+
+            <li onclick="go('manage.html')">
+                <i class="fas fa-car"></i> Manage Cars
+            </li>
+
+            <li onclick="go('user.html')">
+                <i class="fas fa-users"></i> Manage Users
+            </li>
+
+            <li onclick="go('mbook.html')">
+                <i class="fas fa-calendar-check"></i> Manage Bookings
+            </li>
+
+            <li onclick="go('mquery.html')">
+                <i class="fas fa-envelope"></i> Manage Inquiries
+            </li>
+
+            <!-- ✅ ACTIVE PAGE -->
+            <li class="active">
+                <i class="fas fa-file-alt"></i> Reports
+            </li>
+
+            <li onclick="window.location.href='home.html'">
+                <i class="fas fa-car-side"></i> View Showroom
+            </li>
+
+           <li onclick="logout()">
+             <i class="fas fa-sign-out-alt"></i> Logout
+            </li>
+        </ul>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+
+        <div class="page-title">
+            <h2>Reports & Analytics</h2>
+        </div>
+
+        <!-- CARDS -->
+        <div class="report-cards">
+
+            <div class="card">
+                <i class="fas fa-car"></i>
+                <h2>45</h2>
+                <p>Total Cars Listed</p>
+                <button class="download-btn" onclick="downloadReport('Cars')">Download Report</button>
+            </div>
+
+            <div class="card">
+                <i class="fas fa-users"></i>
+                <h2>320</h2>
+                <p>Total Users</p>
+                <button class="download-btn" onclick="downloadReport('Users')">Download Report</button>
+            </div>
+
+            <div class="card">
+                <i class="fas fa-calendar-check"></i>
+                <h2>78</h2>
+                <p>Total Bookings</p>
+                <button class="download-btn" onclick="downloadReport('Bookings')">Download Report</button>
+            </div>
+
+            <div class="card">
+                <i class="fas fa-envelope"></i>
+                <h2>56</h2>
+                <p>Total Inquiries</p>
+                <button class="download-btn" onclick="downloadReport('Inquiries')">Download Report</button>
+            </div>
+
+        </div>
+
+        <!-- SUMMARY -->
+        <div class="summary">
+
+            <h3 style="margin-bottom:15px;">Monthly Summary</h3>
+
+            <table>
+                <tr>
+                    <th>Month</th>
+                    <th>Bookings</th>
+                    <th>Users</th>
+                    <th>Inquiries</th>
+                </tr>
+
+                <tr>
+                    <td>January</td>
+                    <td>12</td>
+                    <td>45</td>
+                    <td>10</td>
+                </tr>
+
+                <tr>
+                    <td>February</td>
+                    <td>18</td>
+                    <td>52</td>
+                    <td>14</td>
+                </tr>
+
+                <tr>
+                    <td>March</td>
+                    <td>25</td>
+                    <td>61</td>
+                    <td>20</td>
+                </tr>
+
+                <tr>
+                    <td>April</td>
+                    <td>23</td>
+                    <td>58</td>
+                    <td>12</td>
+                </tr>
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- SCRIPT -->
+<script>
+// Check local storage for session authentication
+const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+if (!currentUser || currentUser.role !== "ADMIN") {
+    window.location.href = "login.html";
+} else {
+    loadReportsSummary();
+}
+
+function loadReportsSummary() {
+    // 1. Fetch Cars count
+    fetch("/api/cars")
+        .then(res => res.json())
+        .then(cars => {
+            document.querySelector(".report-cards .card:nth-child(1) h2").innerText = cars.length;
+        });
+
+    // 2. Fetch Users count
+    fetch("/api/users")
+        .then(res => res.json())
+        .then(users => {
+            document.querySelector(".report-cards .card:nth-child(2) h2").innerText = users.length;
+        });
+
+    // 3. Fetch Bookings count
+    fetch("/api/bookings")
+        .then(res => res.json())
+        .then(bookings => {
+            document.querySelector(".report-cards .card:nth-child(3) h2").innerText = bookings.length;
+        });
+
+    // 4. Fetch Inquiries count
+    fetch("/api/inquiries")
+        .then(res => res.json())
+        .then(inquiries => {
+            document.querySelector(".report-cards .card:nth-child(4) h2").innerText = inquiries.length;
+        });
+}
+
+function go(page){
+    window.location.href = page;
+}
+
+function downloadReport(type){
+    // Fetch live list based on report type requested
+    let endpoint = "";
+    if (type === "Cars") endpoint = "/api/cars";
+    else if (type === "Users") endpoint = "/api/users";
+    else if (type === "Bookings") endpoint = "/api/bookings";
+    else if (type === "Inquiries") endpoint = "/api/inquiries";
+
+    fetch(endpoint)
+        .then(res => res.json())
+        .then(data => {
+            let content = `REVORA SYSTEM LIVE REPORT - ${type.toUpperCase()}\n`;
+            content += `Generated: ${new Date().toLocaleString()}\n`;
+            content += `===============================================\n\n`;
+
+            if (type === "Cars") {
+                data.forEach(c => {
+                    content += `ID: ${c.id} | Name: ${c.name} | Brand: ${c.brand} | Price: ${c.priceText} | Fuel: ${c.fuel} | Trans: ${c.transmission}\n`;
+                });
+            } else if (type === "Users") {
+                data.forEach(u => {
+                    content += `ID: ${u.id} | Username: ${u.username} | Email: ${u.email} | Phone: ${u.phone} | Role: ${u.role}\n`;
+                });
+            } else if (type === "Bookings") {
+                data.forEach(b => {
+                    content += `ID: ${b.id} | User: ${b.user.username} | Car: ${b.car.name} | Date: ${b.bookingDate} | Status: ${b.status}\n`;
+                });
+            } else if (type === "Inquiries") {
+                data.forEach(inq => {
+                    content += `ID: ${inq.id} | User: ${inq.name} (${inq.email}) | Car: ${inq.car ? inq.car.name : "N/A"} | Date: ${inq.inquiryDate} | Message: ${inq.message} | Reply: ${inq.reply || "None"}\n`;
+                });
+            }
+
+            let blob = new Blob([content], {type:"text/plain"});
+            let link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = type + "_Report_Live.txt";
+            link.click();
+        })
+        .catch(err => {
+            console.error("Error generating report:", err);
+            alert("Error downloading report.");
+        });
+}
+
+function logout() {
+    confirmAction("Are you sure you want to logout?", "Confirm Logout").then(confirmed => {
+        if (confirmed) {
+            localStorage.removeItem("currentUser");
+            window.location.href = "login.html";
+        }
+    });
+}
+</script>
+
+</body>
+</html>
